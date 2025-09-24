@@ -1,0 +1,318 @@
+/**
+ * Estilos frontend para La Musa Core
+ */
+
+/* Widgets de Elementor */
+.restaurant-info {
+    line-height: 1.6;
+}
+
+.restaurant-info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.restaurant-info-item i {
+    margin-right: 8px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.restaurant-info-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.restaurant-info-horizontal .restaurant-info-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+.restaurant-info-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Widget de Menú Semanal */
+.weekly-menu-container {
+    font-family: inherit;
+}
+
+.menu-title {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.menu-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.menu-dates {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.menu-introduction {
+    background: #f8f9fa;
+    padding: 15px;
+    border-left: 4px solid #007cba;
+    margin-bottom: 20px;
+}
+
+.menu-day-item {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.menu-day-item:last-child {
+    border-bottom: none;
+}
+
+.menu-day-title {
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+.menu-day-date {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.menu-special-note {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ffeaa7;
+}
+
+.menu-not-available {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Widget de Alérgenos */
+.allergen-info-container {
+    font-family: inherit;
+}
+
+.allergen-title {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.allergen-section {
+    margin-bottom: 25px;
+}
+
+.allergen-section-title {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.allergen-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.allergen-grid-1 { grid-template-columns: 1fr; }
+.allergen-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.allergen-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.allergen-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+    .allergen-grid-3,
+    .allergen-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .allergen-grid-2,
+    .allergen-grid-3,
+    .allergen-grid-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.allergen-item {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background: #f8f9fa;
+    font-size: 0.9em;
+    margin: 2px;
+    transition: all 0.2s ease;
+}
+
+.allergen-item i {
+    margin-right: 5px;
+}
+
+.allergen-contains {
+    border-color: #e74c3c;
+    background: #fdf2f2;
+}
+
+.allergen-traces {
+    border-color: #f39c12;
+    background: #fef9e7;
+}
+
+.allergen-group {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.allergen-group-title {
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.dish-allergens {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.dish-name {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.dish-description {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.dish-allergen-section {
+    margin-bottom: 8px;
+}
+
+.allergen-prefix {
+    font-weight: bold;
+    color: #555;
+    margin-right: 8px;
+}
+
+.allergen-legend-item {
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.allergen-description {
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85em;
+}
+
+/* Widget de Enlaces de Restaurante */
+.restaurant-links {
+    font-family: inherit;
+}
+
+.restaurant-links-list .restaurant-link-item {
+    margin-bottom: 10px;
+}
+
+.restaurant-links-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.restaurant-links-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.restaurant-links-grid-1 { grid-template-columns: 1fr; }
+.restaurant-links-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.restaurant-links-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.restaurant-links-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.restaurant-link {
+    color: #007cba;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.restaurant-link:hover {
+    color: #005a87;
+    text-decoration: none;
+}
+
+.restaurant-link i {
+    margin-right: 5px;
+}
+
+.restaurant-link-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #007cba;
+    color: #fff !important;
+    border-radius: 5px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.restaurant-link-button:hover {
+    background: #005a87;
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .restaurant-info-horizontal {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .restaurant-links-grid-2,
+    .restaurant-links-grid-3,
+    .restaurant-links-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .restaurant-links-inline {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Utilidades */
+.lamusa-text-center { text-align: center; }
+.lamusa-text-left { text-align: left; }
+.lamusa-text-right { text-align: right; }
+
+.lamusa-mb-small { margin-bottom: 10px; }
+.lamusa-mb-medium { margin-bottom: 20px; }
+.lamusa-mb-large { margin-bottom: 30px; }
+
+.lamusa-hidden { display: none; }
+.lamusa-visible { display: block; }

@@ -1,0 +1,330 @@
+/**
+ * Estilos admin para La Musa Core
+ */
+
+/* Metabox de información del menú */
+.lamusa-menu-info {
+    font-size: 13px;
+}
+
+.lamusa-menu-info p {
+    margin: 8px 0;
+}
+
+.lamusa-menu-info .menu-status {
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.lamusa-menu-info .menu-active {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.lamusa-menu-info .menu-future {
+    background: #cce5ff;
+    color: #004085;
+    border: 1px solid #b3d7ff;
+}
+
+.lamusa-menu-info .menu-expired {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.lamusa-menu-info .menu-published {
+    color: #155724;
+}
+
+.lamusa-menu-info .menu-draft {
+    color: #721c24;
+}
+
+.lamusa-menu-info .dashicons {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Dashboard widget */
+.lamusa-dashboard-overview {
+    font-size: 13px;
+}
+
+.lamusa-dashboard-overview .restaurant-overview {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+}
+
+.lamusa-dashboard-overview h4 {
+    margin-bottom: 8px;
+    color: #1d2327;
+    font-size: 14px;
+}
+
+.lamusa-dashboard-overview p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.lamusa-dashboard-overview .current-menu {
+    color: #155724;
+}
+
+.lamusa-dashboard-overview .no-menu {
+    color: #856404;
+}
+
+.lamusa-dashboard-overview .next-menu {
+    color: #004085;
+}
+
+.lamusa-dashboard-overview .actions {
+    margin-top: 10px;
+}
+
+.lamusa-dashboard-overview .button-small {
+    font-size: 11px;
+    height: auto;
+    line-height: 1.4;
+    padding: 4px 8px;
+}
+
+.lamusa-dashboard-overview .dashicons {
+    vertical-align: middle;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Filtros personalizados */
+.tablenav .actions select[name="restaurant"],
+.tablenav .actions select[name="menu_status"] {
+    margin-right: 5px;
+}
+
+/* Columnas personalizadas */
+.column-restaurant_address,
+.column-restaurant_phone {
+    width: 150px;
+}
+
+.column-menu_restaurant {
+    width: 150px;
+}
+
+.column-menu_start_date,
+.column-menu_end_date {
+    width: 100px;
+}
+
+.column-allergen_icon,
+.column-allergen_color {
+    width: 80px;
+    text-align: center;
+}
+
+.column-allergen_order {
+    width: 60px;
+    text-align: center;
+}
+
+.column-allergen_active {
+    width: 80px;
+    text-align: center;
+}
+
+/* Formulario de alérgenos */
+.form-field.term-icon-wrap input,
+.form-field.term-color-wrap input,
+.form-field.term-order-wrap input {
+    width: 95%;
+}
+
+.form-field.term-active-wrap label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ACF customizations */
+.acf-field[data-name="allergen_groups"] .acf-table {
+    border-collapse: collapse;
+}
+
+.acf-field[data-name="allergen_groups"] .acf-table th,
+.acf-field[data-name="allergen_groups"] .acf-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.acf-field[data-name="allergen_groups"] .acf-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+}
+
+/* Notices personalizadas */
+.notice.lamusa-notice {
+    border-left-color: #e74c3c;
+}
+
+.notice.lamusa-notice .dashicons {
+    color: #e74c3c;
+    margin-right: 5px;
+}
+
+/* Responsive admin */
+@media screen and (max-width: 782px) {
+    .column-restaurant_address,
+    .column-restaurant_phone,
+    .column-menu_restaurant,
+    .column-menu_start_date,
+    .column-menu_end_date {
+        display: none;
+    }
+    
+    .lamusa-dashboard-overview .actions .button {
+        display: block;
+        margin-bottom: 5px;
+        text-align: center;
+    }
+}
+
+/* Mejoras de usabilidad */
+.post-type-restaurant .wp-list-table .row-actions,
+.post-type-weekly_menu .wp-list-table .row-actions {
+    position: static;
+    opacity: 1;
+}
+
+.post-type-restaurant .wp-list-table tr:hover .row-actions,
+.post-type-weekly_menu .wp-list-table tr:hover .row-actions {
+    opacity: 1;
+}
+
+/* Iconos personalizados en el menú admin */
+#adminmenu .menu-icon-restaurant .wp-menu-image:before {
+    content: '\f219';
+    font-family: dashicons;
+}
+
+#adminmenu .menu-icon-weekly_menu .wp-menu-image:before {
+    content: '\f481';
+    font-family: dashicons;
+}
+
+/* Estilos para el editor de contenido */
+.acf-field[data-name="menu_content"] .wp-editor-wrap {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.acf-field[data-name="menu_content"] .wp-editor-tools {
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Loading states */
+.lamusa-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.lamusa-loading:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #ccc;
+    border-top-color: #007cba;
+    border-radius: 50%;
+    animation: lamusa-spin 1s linear infinite;
+}
+
+@keyframes lamusa-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Tooltips */
+.lamusa-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.lamusa-tooltip:hover:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+.lamusa-tooltip:hover:before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    z-index: 1000;
+}
+
+/* Accesibilidad */
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+/* Focus states mejorados */
+.lamusa-focus-visible:focus {
+    outline: 2px solid #007cba;
+    outline-offset: 2px;
+}
+
+/* Estilos para alérgenos en el admin */
+.allergen-choice-item {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+}
+
+.allergen-choice-item i {
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* Asegurar que los iconos dashicons se muestren correctamente */
+.acf-field[data-name="allergens_contains"] .dashicons,
+.acf-field[data-name="allergens_traces"] .dashicons {
+    font-family: dashicons;
+    font-size: 16px;
+    line-height: 1;
+    width: 16px;
+    height: 16px;
+}
+
+/* Print styles */
+@media print {
+    .lamusa-dashboard-overview .actions,
+    .row-actions,
+    .tablenav {
+        display: none !important;
+    }
+}
