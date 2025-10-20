@@ -77,6 +77,7 @@ class LaMusaRestaurantFieldTag extends \Elementor\Core\DynamicTags\Tag {
                     'phone' => __('Teléfono', 'lamusa-core'),
                     'opening_hours' => __('Horario', 'lamusa-core'),
                     'description' => __('Descripción', 'lamusa-core'),
+                    'url_local' => __('URL Local (Página Interna)', 'lamusa-core'),
                     'url_breakfast' => __('URL Desayunos', 'lamusa-core'),
                     'url_menu' => __('URL Carta', 'lamusa-core'),
                     'url_drinks' => __('URL Bebidas', 'lamusa-core'),
@@ -94,7 +95,7 @@ class LaMusaRestaurantFieldTag extends \Elementor\Core\DynamicTags\Tag {
         );
 
         $this->add_control(
-            'fallback',
+            'restaurant_fallback',
             [
                 'label' => __('Texto de Respaldo', 'lamusa-core'),
                 'type' => \Elementor\Controls_Manager::TEXT,
@@ -108,7 +109,7 @@ class LaMusaRestaurantFieldTag extends \Elementor\Core\DynamicTags\Tag {
         $settings = $this->get_settings();
         $restaurant_id = $settings['restaurant_id'];
         $field = $settings['field'];
-        $fallback = $settings['fallback'];
+        $fallback = $settings['restaurant_fallback'];
 
         if (!$restaurant_id) {
             echo $fallback;

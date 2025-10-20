@@ -3,7 +3,7 @@
  * Plugin Name: La Musa Core
  * Plugin URI: https://lamusa.es
  * Description: Plugin para gestión de restaurantes, menús semanales y alérgenos para el grupo La Musa
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Eduardo MC
  * Text Domain: lamusa-core
  * Domain Path: /languages
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Definir constantes del plugin
-define('LAMUSA_CORE_VERSION', '1.0.0');
+define('LAMUSA_CORE_VERSION', '1.1.0');
 define('LAMUSA_CORE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('LAMUSA_CORE_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('LAMUSA_CORE_PLUGIN_FILE', __FILE__);
@@ -84,7 +84,11 @@ class LaMusaCore {
             'includes/elementor-integration.php',
             'includes/admin-functions.php',
             'includes/helper-functions.php',
-            'includes/ajax-functions.php'
+            'includes/ajax-functions.php',
+            'includes/rewrite-rules.php',
+            'includes/shortcodes.php',
+            'includes/admin-help-page.php',
+            'includes/admin-settings-page.php'
         );
         
         foreach ($includes as $file) {
@@ -140,6 +144,13 @@ class LaMusaCore {
             LAMUSA_CORE_VERSION
         );
         
+        wp_enqueue_style(
+            'lamusa-shortcodes',
+            LAMUSA_CORE_PLUGIN_URL . 'assets/css/shortcodes.css',
+            array(),
+            LAMUSA_CORE_VERSION
+        );
+        
         wp_enqueue_script(
             'lamusa-core-frontend',
             LAMUSA_CORE_PLUGIN_URL . 'assets/js/frontend.js',
@@ -151,6 +162,14 @@ class LaMusaCore {
         wp_enqueue_script(
             'lamusa-menu-navigator',
             LAMUSA_CORE_PLUGIN_URL . 'assets/js/menu-navigator.js',
+            array('jquery'),
+            LAMUSA_CORE_VERSION,
+            true
+        );
+        
+        wp_enqueue_script(
+            'lamusa-mobile-menu',
+            LAMUSA_CORE_PLUGIN_URL . 'assets/js/mobile-menu.js',
             array('jquery'),
             LAMUSA_CORE_VERSION,
             true

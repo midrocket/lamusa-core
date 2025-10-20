@@ -1,8 +1,3 @@
-/**
- * Estilos admin para La Musa Core
- */
-
-/* Metabox de información del menú */
 .lamusa-menu-info {
     font-size: 13px;
 }
@@ -49,7 +44,6 @@
     margin-right: 5px;
 }
 
-/* Dashboard widget */
 .lamusa-dashboard-overview {
     font-size: 13px;
 }
@@ -100,13 +94,11 @@
     height: 16px;
 }
 
-/* Filtros personalizados */
 .tablenav .actions select[name="restaurant"],
 .tablenav .actions select[name="menu_status"] {
     margin-right: 5px;
 }
 
-/* Columnas personalizadas */
 .column-restaurant_address,
 .column-restaurant_phone {
     width: 150px;
@@ -137,7 +129,6 @@
     text-align: center;
 }
 
-/* Formulario de alérgenos */
 .form-field.term-icon-wrap input,
 .form-field.term-color-wrap input,
 .form-field.term-order-wrap input {
@@ -150,7 +141,6 @@
     gap: 8px;
 }
 
-/* ACF customizations */
 .acf-field[data-name="allergen_groups"] .acf-table {
     border-collapse: collapse;
 }
@@ -166,7 +156,6 @@
     font-weight: 600;
 }
 
-/* Notices personalizadas */
 .notice.lamusa-notice {
     border-left-color: #e74c3c;
 }
@@ -176,7 +165,6 @@
     margin-right: 5px;
 }
 
-/* Responsive admin */
 @media screen and (max-width: 782px) {
     .column-restaurant_address,
     .column-restaurant_phone,
@@ -193,7 +181,6 @@
     }
 }
 
-/* Mejoras de usabilidad */
 .post-type-restaurant .wp-list-table .row-actions,
 .post-type-weekly_menu .wp-list-table .row-actions {
     position: static;
@@ -205,9 +192,8 @@
     opacity: 1;
 }
 
-/* Iconos personalizados en el menú admin */
 #adminmenu .menu-icon-restaurant .wp-menu-image:before {
-    content: '\f219';
+    content: '\f187';
     font-family: dashicons;
 }
 
@@ -216,7 +202,6 @@
     font-family: dashicons;
 }
 
-/* Estilos para el editor de contenido */
 .acf-field[data-name="menu_content"] .wp-editor-wrap {
     border: 1px solid #ddd;
     border-radius: 3px;
@@ -227,7 +212,6 @@
     border-bottom: 1px solid #ddd;
 }
 
-/* Loading states */
 .lamusa-loading {
     opacity: 0.6;
     pointer-events: none;
@@ -251,7 +235,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Tooltips */
 .lamusa-tooltip {
     position: relative;
     cursor: help;
@@ -283,7 +266,6 @@
     z-index: 1000;
 }
 
-/* Accesibilidad */
 .screen-reader-text {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
@@ -292,13 +274,11 @@
     overflow: hidden;
 }
 
-/* Focus states mejorados */
 .lamusa-focus-visible:focus {
     outline: 2px solid #007cba;
     outline-offset: 2px;
 }
 
-/* Estilos para alérgenos en el admin */
 .allergen-choice-item {
     display: inline-flex !important;
     align-items: center;
@@ -310,7 +290,6 @@
     line-height: 1;
 }
 
-/* Asegurar que los iconos dashicons se muestren correctamente */
 .acf-field[data-name="allergens_contains"] .dashicons,
 .acf-field[data-name="allergens_traces"] .dashicons {
     font-family: dashicons;
@@ -320,7 +299,6 @@
     height: 16px;
 }
 
-/* Print styles */
 @media print {
     .lamusa-dashboard-overview .actions,
     .row-actions,

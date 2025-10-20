@@ -9,6 +9,59 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Eliminar metaboxes innecesarios de menús semanales
+ */
+add_action('add_meta_boxes', 'lamusa_remove_unnecessary_metaboxes');
+function lamusa_remove_unnecessary_metaboxes() {
+    // Eliminar metabox de imagen destacada
+    remove_meta_box('postimagediv', 'weekly_menu', 'side');
+    
+    // Eliminar metabox de alérgenos (taxonomía)
+    remove_meta_box('tagsdiv-allergen', 'weekly_menu', 'side');
+    remove_meta_box('allergen_div', 'weekly_menu', 'side');
+}
+
+/**
+ * Eliminar enlace permanente de menús semanales
+ */
+add_filter('get_sample_permalink_html', 'lamusa_remove_permalink_from_menus', 10, 2);
+function lamusa_remove_permalink_from_menus($return, $post_id) {
+    $post = get_post($post_id);
+    if ($post && $post->post_type === 'weekly_menu') {
+        return ''; // No mostrar enlace permanente
+    }
+    return $return;
+}
+
+/**
+ * Eliminar botón de previsualizar menú
+ */
+add_action('admin_head-post.php', 'lamusa_remove_preview_button');
+add_action('admin_head-post-new.php', 'lamusa_remove_preview_button');
+function lamusa_remove_preview_button() {
+    global $post_type;
+    
+    if ($post_type === 'weekly_menu') {
+        ?>
+        <style>
+        #preview-action,
+        .lamusa-preview-menu {
+            display: none !important;
+        }
+        </style>
+        
+        <script>
+        jQuery(document).ready(function($) {
+            // Eliminar cualquier botón de previsualizar que pueda existir
+            $('.lamusa-preview-menu').remove();
+            $('#preview-action').remove();
+        });
+        </script>
+        <?php
+    }
+}
+
+/**
  * Añadir metabox de información en el editor de menús semanales
  */
 add_action('add_meta_boxes', 'lamusa_add_menu_info_metabox');

@@ -144,7 +144,7 @@ class LaMusaMenuContentTag extends \Elementor\Core\DynamicTags\Tag {
         );
 
         $this->add_control(
-            'fallback_text',
+            'content_fallback_text',
             [
                 'label' => __('Texto de Respaldo', 'lamusa-core'),
                 'type' => \Elementor\Controls_Manager::TEXT,
@@ -162,7 +162,7 @@ class LaMusaMenuContentTag extends \Elementor\Core\DynamicTags\Tag {
         $include_day_title = $settings['include_day_title'] === 'yes';
         $title_format = $settings['title_format'] ?: 'h3';
         $show_special_notes = $settings['show_special_notes'] === 'yes';
-        $fallback_text = $settings['fallback_text'] ?: __('No hay menú disponible', 'lamusa-core');
+        $fallback_text = $settings['content_fallback_text'] ?: __('No hay menú disponible', 'lamusa-core');
 
         if (!$restaurant_id) {
             echo $fallback_text;

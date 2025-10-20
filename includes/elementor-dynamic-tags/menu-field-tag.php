@@ -116,7 +116,7 @@ class LaMusaMenuFieldTag extends \Elementor\Core\DynamicTags\Tag {
         );
 
         $this->add_control(
-            'fallback',
+            'menu_fallback',
             [
                 'label' => __('Texto de Respaldo', 'lamusa-core'),
                 'type' => \Elementor\Controls_Manager::TEXT,
@@ -132,7 +132,7 @@ class LaMusaMenuFieldTag extends \Elementor\Core\DynamicTags\Tag {
         $field = $settings['field'];
         $day_specific = $settings['day_specific'];
         $date_format = $settings['date_format'] ?: 'd/m/Y';
-        $fallback = $settings['fallback'];
+        $fallback = $settings['menu_fallback'];
 
         if (!$restaurant_id) {
             echo $fallback;

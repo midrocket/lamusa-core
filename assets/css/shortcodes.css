@@ -1,0 +1,1367 @@
+:root {
+    --lamusa-primary-color: #FF0004;
+    --lamusa-secondary-color: #FFE2D0;
+    --lamusa-font-family-primary: "AOT Serial Mono", monospace;
+    --lamusa-font-family-secondary: "Chreed", Sans-serif;
+    --lamusa-font-family-tertiary: "CSAlpine italica", Sans-serif;
+    --lamusa-font-family-quaternary: "Chreed Oblique", Sans-serif;
+    --lamusa-container-max-width: 1200px;
+}
+
+.lamusa-shortcode-container {
+    font-family: var(--lamusa-font-family-primary);
+    background: #ffffff;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+}
+
+.lamusa-restaurants-bar {
+    background: var(--lamusa-primary-color);
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+.lamusa-restaurants-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.lamusa-restaurants-bar .restaurant-bar-item {
+    flex: 0 0 auto;
+    padding: 15px;
+    color: var(--lamusa-secondary-color);
+    text-decoration: none;
+    font-family: var(--lamusa-font-family-secondary);
+    font-weight: bold;
+    font-size: 1.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    border: 1px solid #000;
+    border-bottom: 0;
+    border-top: 0;
+    margin: 0 -1px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lamusa-restaurants-bar .restaurant-bar-item:hover {
+    background: rgba(255, 226, 208, 0.1);
+    text-decoration: none;
+    color: var(--lamusa-secondary-color);
+}
+
+.lamusa-restaurants-bar .restaurant-bar-item.active {
+    background: var(--lamusa-secondary-color);
+    color: var(--lamusa-primary-color);
+}
+
+.lamusa-restaurants-bar .restaurant-bar-item span {
+	line-height: 1.2em;
+	align-items: center;
+	display: inline-flex;
+}
+
+.lamusa-restaurants-bar .restaurant-bar-item span.restaurant-title-primary {
+	margin-bottom: -4px;
+}
+
+.lamusa-restaurants-bar .restaurant-bar-item .restaurant-title-secondary {
+    font-family: var(--lamusa-font-family-tertiary);
+    font-style: italic;
+    font-weight: 300;
+    text-transform: none;
+    font-size: 0.9em;
+}
+
+.lamusa-days-submenu {
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    border-bottom: none;
+    max-width: var(--lamusa-container-max-width);
+    margin: 0 auto;
+    position: relative;
+}
+
+.lamusa-days-submenu .day-submenu-item {
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    font-size: 1.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-right: 1px solid var(--lamusa-primary-color);
+    background: var(--lamusa-primary-color);
+    position: relative;
+    font-family: var(--lamusa-font-family-secondary);
+    border: 1px solid #000;
+    color: var(--lamusa-secondary-color);
+    margin: 0 -1px;
+    border-top: 0;
+}
+
+.lamusa-days-submenu .day-submenu-item.active, .lamusa-days-submenu .day-submenu-item:hover  {
+    color: var(--lamusa-primary-color);
+    background: var(--lamusa-secondary-color);
+}
+
+.lamusa-days-submenu .day-submenu-item.no-menu {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.lamusa-days-submenu .day-name {
+    display: block;
+    line-height: 1.2;
+}
+
+.lamusa-menu-content-section {
+    background: #ffffff;
+    max-width: var(--lamusa-container-max-width);
+    margin: 0 auto;
+}
+
+.lamusa-content-header {
+    background: #ffffff;
+    position: relative;
+}
+
+.content-header-layout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 50px;
+    align-items: start;
+}
+
+.content-header-left {
+    grid-column: 1;
+}
+
+.content-header-right {
+    grid-column: 2;
+    text-align: right;
+    padding: 20px;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+.content-restaurant-title {
+    border-right: 2px solid var(--lamusa-primary-color);
+    padding: 20px;
+}
+
+.content-restaurant-name {
+    display: block;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-size: 5.5em;
+    font-weight: bold;
+    color: var(--lamusa-primary-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 0.85;
+    margin-bottom: -10px;
+}
+
+.content-restaurant-name-secondary {
+    display: block;
+    font-family: var(--lamusa-font-family-tertiary);
+    font-size: 3.2em;
+    font-weight: 300;
+    color: var(--lamusa-primary-color);
+    font-style: italic;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-left: 20px;
+}
+
+.content-restaurant-subtitle {
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1.1em;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+.content-restaurant-subtitle-secondary {
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 0.9em;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.content-menu-price {
+    font-family: var(--lamusa-font-family-secondary);
+    font-size: 4.5em;
+    font-weight: bold;
+    color: var(--lamusa-primary-color);
+    line-height: 1;
+}
+
+.content-header-bottom {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 30px;
+    align-items: center;
+    border-top: 2px solid var(--lamusa-primary-color);
+    border-bottom: 2px solid var(--lamusa-primary-color);
+}
+
+.content-menu-dates {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1em;
+    font-weight: 300;
+    color: #000000;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    border-right: 2px solid var(--lamusa-primary-color);
+}
+
+.content-menu-dates .date-range {
+    background: transparent;
+    color: #000000;
+    padding: 0;
+    border-radius: 0;
+    font-size: 1em;
+}
+
+.content-menu-dates > span:first-child {
+	align-self: start;
+}
+
+.content-menu-dates > span:last-child {
+    align-self: end;
+}
+
+.content-menu-dates .date-separator {
+    width: 30px;
+    height: 3px;
+    background: var(--lamusa-primary-color);
+    display: block;
+}
+
+.content-menu-description {
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    font-size: 1em;
+    line-height: 1.4;
+    padding: 20px;
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.content-menu-description p {
+	margin: 0;
+}
+
+.content-allergens-button {
+    text-align: right;
+    display: flex;
+    height: 100%;
+}
+
+.allergens-btn {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+    padding: 12px 25px;
+    text-decoration: none;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-weight: 300;
+    font-size: 3em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+}
+
+.allergens-btn:hover {
+    background: var(--lamusa-primary-color);
+    text-decoration: none;
+    color: var(--lamusa-secondary-color);
+}
+
+.lamusa-day-menu-content {
+    padding: 50px 20px;
+    background: #ffffff;
+    margin: 0 auto;
+    border-bottom: 2px solid var(--lamusa-primary-color);
+}
+
+.lamusa-day-menu-content .menu-day-content h3 {
+    font-family: var(--lamusa-font-family-primary);
+    background: transparent;
+    color: #000000;
+    padding: 0;
+    margin: 40px 0 20px 0;
+    font-size: 1.4em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid var(--lamusa-primary-color);
+    padding-bottom: 10px;
+}
+
+.lamusa-day-menu-content .menu-day-content h3:first-child {
+    margin-top: 0;
+}
+
+.lamusa-day-menu-content .menu-day-content p {
+    font-family: var(--lamusa-font-family-primary);
+    line-height: 1.6;
+    color: #000000;
+    font-size: 15px;
+    position: relative;
+}
+
+.menu-special-note {
+    background: var(--lamusa-secondary-color);
+    color: #000000;
+    padding: 30px;
+    border: 2px solid var(--lamusa-primary-color);
+    text-align: center;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.menu-not-available {
+    text-align: center;
+    padding: 50px 20px;
+    color: #000000;
+    font-family: var(--lamusa-font-family-primary);
+}
+
+.menu-not-available h3 {
+    font-family: var(--lamusa-font-family-quaternary);
+    color: var(--lamusa-primary-color);
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+.lamusa-error,
+.lamusa-no-menu {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--lamusa-secondary-color);
+    border: 2px solid var(--lamusa-primary-color);
+    margin: 20px 0;
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+}
+
+.lamusa-allergens-header {
+    background: #ffffff;
+    padding: 40px 50px;
+    border-bottom: 2px solid var(--lamusa-primary-color);
+    max-width: var(--lamusa-container-max-width);
+    margin: 0 auto;
+}
+
+.lamusa-allergens-header .allergens-header-content {
+    text-align: center;
+}
+
+.lamusa-allergens-header .allergens-restaurant-title {
+    margin-bottom: 20px;
+}
+
+.lamusa-allergens-header .allergens-restaurant-name {
+    font-family: var(--lamusa-font-family-quaternary);
+    font-size: 4em;
+    font-weight: bold;
+    color: var(--lamusa-primary-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: inline;
+}
+
+.lamusa-allergens-header .allergens-restaurant-name-secondary {
+    font-family: var(--lamusa-font-family-tertiary);
+    font-size: 2.5em;
+    font-weight: 300;
+    color: var(--lamusa-primary-color);
+    font-style: italic;
+    margin-left: 15px;
+    display: inline;
+}
+
+.lamusa-allergens-header .allergens-page-title {
+    font-family: var(--lamusa-font-family-quaternary);
+    font-size: 2.2em;
+    color: var(--lamusa-primary-color);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 15px;
+}
+
+.detailed-allergens {
+    padding: 50px;
+    max-width: var(--lamusa-container-max-width);
+    margin: 0 auto;
+}
+
+.detailed-allergens .allergen-group {
+    margin-bottom: 50px;
+    border: 2px solid var(--lamusa-primary-color);
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.detailed-allergens .group-title {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+    padding: 20px 30px;
+    margin: 0;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1.3em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.detailed-allergens .dish-allergen-info {
+    padding: 25px 30px;
+    border-bottom: 1px solid var(--lamusa-secondary-color);
+    background: #ffffff;
+}
+
+.detailed-allergens .dish-allergen-info:last-child {
+    border-bottom: none;
+}
+
+.detailed-allergens .dish-name {
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.detailed-allergens .dish-description {
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    font-style: normal;
+    opacity: 0.8;
+}
+
+.detailed-allergens .allergen-contains,
+.detailed-allergens .allergen-traces {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    font-family: var(--lamusa-font-family-primary);
+}
+
+.detailed-allergens .allergen-contains strong {
+    color: var(--lamusa-primary-color);
+}
+
+.detailed-allergens .allergen-traces strong {
+    color: var(--lamusa-primary-color);
+}
+
+.detailed-allergens .allergen-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 12px;
+    font-weight: 500;
+    font-family: var(--lamusa-font-family-primary);
+}
+
+.detailed-allergens .allergen-item i {
+    margin-right: 6px;
+    font-size: 16px;
+}
+
+.lamusa-restaurant-navigation {
+    background: var(--lamusa-secondary-color);
+    padding: 25px 50px;
+    border-top: 2px solid var(--lamusa-primary-color);
+    max-width: var(--lamusa-container-max-width);
+    margin: 0 auto;
+}
+
+.lamusa-restaurant-navigation h4 {
+    margin-bottom: 20px;
+    color: #000000;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1.1em;
+}
+
+.lamusa-restaurant-navigation .restaurant-nav-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.lamusa-restaurant-navigation .restaurant-nav-item {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+    padding: 10px 20px;
+    text-decoration: none;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 0;
+}
+
+.lamusa-restaurant-navigation .restaurant-nav-item:hover {
+    background: var(--lamusa-primary-color);
+    text-decoration: none;
+    color: var(--lamusa-secondary-color);
+}
+
+.lamusa-desktop-layout {
+    display: block;
+}
+
+.lamusa-mobile-layout {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .lamusa-desktop-layout {
+        display: none;
+    }
+    
+    .lamusa-mobile-layout {
+        display: block;
+    }
+}
+
+.lamusa-mobile-days-container {
+    background: #ffffff;
+}
+
+.mobile-day-item {
+    border-bottom: 1px solid var(--lamusa-secondary-color);
+}
+
+.mobile-day-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-day-header {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    padding: 15px 8px;
+    font-size: 2.5em;
+    border: 0;
+    border-bottom: 2px solid #fff;
+    background: var(--lamusa-secondary-color);
+    color: var(--lamusa-primary-color);
+    font-family: var(--lamusa-font-family-secondary);
+    justify-content: center;
+    position: relative;
+}
+
+.mobile-day-header:hover {
+    background: rgba(255, 226, 208, 0.8);
+    text-decoration: none;
+    color: #000000;
+}
+
+.mobile-day-item.active .mobile-day-header {
+    background: var(--lamusa-secondary-color);
+    color: var(--lamusa-primary-color);
+}
+
+.mobile-day-item.no-menu .mobile-day-header {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.mobile-day-name {
+    flex: 1;
+    text-align: center;
+}
+
+.mobile-day-arrow {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.mobile-day-item.active .mobile-day-arrow {
+    transform: rotate(180deg);
+}
+
+.mobile-day-content {
+    background: #ffffff;
+    display: none;
+}
+
+.mobile-day-content.active {
+    display: block;
+}
+
+.lamusa-mobile-days-container > div:first-child > a {
+	padding-top: 30px;
+}
+
+.mobile-day-item.has-menu.active .mobile-day-header::after {
+		content: "";
+		position: absolute;
+		bottom: -38px;
+		left: 50%;
+		transform: translateX(-50%);
+		border-width: 20px;
+		border-style: solid;
+		border-color: var(--lamusa-secondary-color) transparent transparent transparent;
+}
+
+.mobile-restaurant-header {
+    padding: 40px 20px 20px;
+    background: #ffffff;
+}
+
+.mobile-menu-info-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.mobile-menu-price {
+    font-family: var(--lamusa-font-family-secondary);
+    font-size: 5em;
+    font-weight: bold;
+    color: var(--lamusa-primary-color);
+    line-height: 1;
+}
+
+.mobile-allergens-btn {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+    padding: 10px 20px;
+    text-decoration: none;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-weight: 300;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 0;
+    align-self: center;
+    display: inline-flex;
+    line-height: 0.7em;
+}
+
+.mobile-allergens-btn:hover {
+    background: rgba(255, 0, 4, 0.9);
+    text-decoration: none;
+    color: var(--lamusa-secondary-color);
+}
+
+.mobile-menu-info-bottom {
+    border-top: 2px solid var(--lamusa-primary-color);
+    border-bottom: 2px solid var(--lamusa-primary-color);
+    padding: 20px 0;
+    display: flex;
+    gap: 20px;
+}
+
+.mobile-menu-dates-section {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 15px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.mobile-date-range {
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    font-weight: 300;
+    font-size: 1em;
+}
+
+.mobile-date-separator {
+    width: 30px;
+    height: 2px;
+    background: var(--lamusa-primary-color);
+    display: block;
+}
+
+.mobile-menu-description {
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    font-size: 0.9em;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.mobile-menu-content {
+    padding: 20px 20px 50px 20px;
+    background: #ffffff;
+}
+
+.mobile-day-menu h3 {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+    padding: 12px 20px;
+    margin: 20px 0 15px 0;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mobile-day-menu h3:first-child {
+    margin-top: 0;
+}
+
+.mobile-menu-dates-section > .mobile-date-range:last-child {
+	margin-left: 30px;
+}
+
+.mobile-day-menu p {
+    font-family: var(--lamusa-font-family-primary);
+    margin: 10px 0 10px 20px;
+    line-height: 1.5;
+    color: #000000;
+    font-size: 14px;
+}
+
+.mobile-special-note {
+    background: var(--lamusa-secondary-color);
+    color: #000000;
+    padding: 20px;
+    border: 1px solid var(--lamusa-primary-color);
+    text-align: center;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 1em;
+}
+
+.mobile-no-menu {
+    text-align: center;
+    padding: 30px 20px;
+    color: #666;
+    font-family: var(--lamusa-font-family-primary);
+}
+
+.lamusa-mobile-restaurants-bottom {
+    background: var(--lamusa-secondary-color);
+    padding: 25px;
+    border-top: 2px solid var(--lamusa-primary-color);
+    margin-top: 30px;
+}
+
+.mobile-other-restaurants-title {
+    font-family: var(--lamusa-font-family-quaternary);
+    color: var(--lamusa-primary-color);
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mobile-restaurants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.mobile-restaurant-item {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+    padding: 15px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.mobile-restaurant-item:hover {
+    background: rgba(255, 0, 4, 0.9);
+    text-decoration: none;
+    color: var(--lamusa-secondary-color);
+}
+
+.mobile-restaurant-item .mobile-restaurant-name {
+    font-family: var(--lamusa-font-family-quaternary);
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+}
+
+.mobile-restaurant-item .mobile-restaurant-secondary {
+    font-family: var(--lamusa-font-family-tertiary);
+    font-size: 0.9em;
+    font-weight: 300;
+    font-style: italic;
+    display: block;
+    margin-top: 3px;
+}
+
+@media (max-width: 1200px) {
+    .lamusa-menu-content-section,
+    .lamusa-restaurant-header,
+    .detailed-allergens,
+    .lamusa-restaurant-navigation {
+        max-width: 100%;
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .lamusa-restaurants-bar .restaurant-bar-item {
+        padding: 15px 20px;
+        font-size: 14px;
+    }
+    
+    .lamusa-days-submenu .day-submenu-item {
+        padding: 18px 12px;
+        font-size: 12px;
+    }
+    
+    .lamusa-content-header {
+        padding: 30px 25px;
+    }
+    
+    .content-header-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .content-header-right {
+        text-align: left;
+    }
+    
+    .content-restaurant-name {
+        font-size: 3.5em;
+    }
+    
+    .content-restaurant-name-secondary {
+        font-size: 2.2em;
+    }
+    
+    .content-menu-price {
+        font-size: 3em;
+    }
+    
+    .content-header-bottom {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .content-allergens-button {
+        text-align: center;
+    }
+    
+    .lamusa-day-menu-content {
+        padding: 30px 25px;
+    }
+    
+    .lamusa-day-menu-content .menu-day-content p {
+        margin-left: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .lamusa-restaurants-bar {
+        flex-wrap: wrap;
+        flex-direction: column;
+        border: 0;
+        margin-bottom: 2px;
+        z-index: 99!important;
+        overflow: visible;
+    }
+
+	 .lamusa-restaurants-bar::after {
+		  content: "";
+		  position: absolute;
+		  bottom: -38px;
+		  left: 50%;
+		  transform: translateX(-50%);
+		  border-width: 20px;
+		  border-style: solid;
+		  border-color: var(--lamusa-primary-color) transparent transparent transparent;
+	}
+    
+    .lamusa-restaurants-bar .restaurant-bar-item {
+        flex: 1 1 auto;
+        text-align: center;
+        border-right: none;
+        border: 0;
+        padding: 12px 15px;
+        font-size: 2.5em;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lamusa-restaurants-bar .restaurant-bar-item.active {
+        background: var(--lamusa-primary-color);
+        color: var(--lamusa-secondary-color);
+    }
+    
+    .lamusa-days-submenu {
+        grid-template-columns: 1fr;
+        z-index: 98;
+    }
+    
+    .lamusa-days-submenu .day-submenu-item {
+        padding: 15px 8px;
+        font-size: 2.5em;
+        border: 0;
+        border-bottom: 2px solid #fff;
+        background: var(--lamusa-secondary-color);
+        color: var(--lamusa-primary-color);
+    }
+
+	.lamusa-days-submenu > .day-submenu-item:first-child {
+		padding-top: 30px!important;
+	}
+	
+	.lamusa-days-submenu:not(.allergens-page) > .day-submenu-item:last-child:after {
+		content: "";
+		position: absolute;
+		bottom: -38px;
+		left: 50%;
+		transform: translateX(-50%);
+		border-width: 20px;
+		border-style: solid;
+		border-color: var(--lamusa-secondary-color) transparent transparent transparent;
+	}
+    
+    .content-restaurant-name {
+        font-size: 2.5em;
+    }
+    
+    .content-restaurant-name-secondary {
+        font-size: 1.8em;
+    }
+    
+    .content-menu-price {
+        font-size: 2.5em;
+    }
+    
+    .lamusa-day-menu-content .menu-day-content h3 {
+        font-size: 1.1em;
+    }
+    
+    .lamusa-day-menu-content .menu-day-content p {
+        margin-left: 20px;
+        font-size: 14px;
+    }
+}
+
+@media print {
+    .lamusa-restaurants-bar,
+    .lamusa-days-submenu,
+    .content-allergens-button,
+    .lamusa-restaurant-navigation {
+        display: none !important;
+    }
+    
+    .lamusa-content-header {
+        border-bottom: 3px solid #000;
+        margin-bottom: 30px;
+        padding-bottom: 25px;
+    }
+    
+    .lamusa-day-menu-content {
+        padding: 0;
+    }
+    
+    .content-restaurant-name,
+    .content-restaurant-name-secondary,
+    .content-menu-price {
+        color: #000 !important;
+    }
+}
+
+.content-restaurant-name {
+    font-family: var(--lamusa-font-family-secondary);
+}
+
+.content-restaurant-name-secondary {
+    font-family: var(--lamusa-font-family-tertiary);
+}
+
+.lamusa-day-menu-content, .content-menu-description {
+    font-family: var(--lamusa-font-family-primary);
+}
+
+.lamusa-restaurant-action-buttons {
+    background: #ffffff;
+    padding: 0;
+    margin: 0;
+    max-width: var(--lamusa-container-max-width);
+    margin: 50px auto 0 auto;
+}
+
+.action-buttons-container {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.action-button {
+    flex: 1;
+    padding: 0;
+    text-decoration: none;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-weight: 300;
+    font-size: 8em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    transition: all 0.2s ease;
+    border: none;
+    position: relative;
+}
+
+.action-buttons-container > a.action-button:nth-child(odd) {
+	font-family: var(--lamusa-font-family-quaternary);
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+}
+
+.action-buttons-container > a.action-button:nth-child(odd):hover {
+    background: var(--lamusa-secondary-color);
+    color: var(--lamusa-primary-color);
+}
+
+.action-buttons-container > a.action-button:nth-child(even) {
+	font-family: var(--lamusa-font-family-quaternary);
+    background: var(--lamusa-secondary-color);
+    color: var(--lamusa-primary-color);
+}
+
+.action-buttons-container > a.action-button:nth-child(even):hover {
+    background: var(--lamusa-primary-color);
+    color: var(--lamusa-secondary-color);
+}
+
+.action-button:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.action-button-text {
+    display: block;
+    line-height: 1;
+    margin-bottom: -0.15em;
+}
+
+/* Responsive para botones de acciÃ³n */
+@media (max-width: 768px) {
+    .action-buttons-container {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 20px;
+    }
+    
+    .action-button {
+        flex: none;
+        padding: 18px 20px;
+        font-size: 5em;
+        margin: 5px 20px;
+    }
+    
+    .action-button:last-child {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .action-button {
+        padding: 15px 15px;
+        font-size: 14px;
+    }
+}
+
+.lamusa-allergens-table-container {
+    padding: 50px 0;
+    max-width: var(--lamusa-container-max-width);
+    margin: 0 auto;
+    background: #ffffff;
+}
+
+.lamusa-allergens-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--lamusa-font-family-primary);
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.lamusa-allergens-table thead th {
+    background: #ffff;
+    color: var(--lamusa-secondary-color);
+    padding: 15px 8px;
+    text-align: center;
+    border: 2px solid var(--lamusa-primary-color);
+    border-bottom: 0;
+    font-weight: bold;
+    position: relative;
+    border-block-start: none !important;
+}
+
+.lamusa-allergens-table thead th.dish-column {
+    text-align: left;
+    padding-left: 20px;
+    width: 300px;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-block-start: none!important;
+    opacity: 0;
+    border: 0;
+}
+
+.lamusa-allergens-table thead th.allergen-column {
+    width: 50px;
+    padding: 10px 5px;
+    cursor: help;
+    vertical-align: middle;
+}
+
+.lamusa-allergens-table thead th.allergen-column img {
+    object-fit: contain;
+}
+
+.lamusa-allergens-table thead th.allergen-column i {
+}
+
+.lamusa-allergens-table thead th.allergen-column span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.lamusa-allergens-table tbody tr.group-row {
+    background: var(--lamusa-primary-color);
+}
+
+.lamusa-allergens-table tbody tr.group-row .group-title {
+    color: #fff;
+    padding: 15px 20px;
+    font-family: var(--lamusa-font-family-quaternary);
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid var(--lamusa-primary-color);
+}
+
+.lamusa-allergens-table tbody tr.dish-row {
+    background: #ffffff;
+    border-bottom: 1px solid var(--lamusa-secondary-color);
+}
+
+.lamusa-allergens-table tbody tr.dish-row:hover {
+    background: #fffaf8;
+}
+
+.lamusa-allergens-table tbody td.dish-name {
+    padding: 15px 20px;
+    border: 0;
+    border-bottom: 2px solid var(--lamusa-primary-color);
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    font-weight: 300;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+.lamusa-allergens-table tbody td.dish-name strong {
+    font-size: 1em;
+    display: block;
+}
+
+.lamusa-allergens-table tbody td.dish-name small {
+    color: #666666;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.lamusa-allergens-table tbody td.allergen-cell {
+    text-align: center;
+    padding: 15px 5px;
+    border: 2px solid var(--lamusa-primary-color);
+    border-top: 0;
+    background: #ffffff;
+}
+
+.allergen-contains-symbol {
+    color: var(--lamusa-primary-color);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.allergen-traces-symbol {
+    color: var(--lamusa-primary-color);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: var(--lamusa-font-family-primary);
+}
+
+.allergens-legend {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: end;
+}
+
+.allergens-legend .legend-item {
+    display: flex;
+    gap: 10px;
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+    font-weight: 300;
+    font-size: 0.7em;
+    align-items: center;
+}
+
+.allergens-legend .legend-item .legend-item-text {
+	margin-bottom: -6px;
+}
+
+.lamusa-allergens-table thead th[data-tooltip] {
+    position: relative;
+}
+
+.lamusa-allergens-table thead th[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000000;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-family: var(--lamusa-font-family-primary);
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: normal;
+    max-width: 200px;
+    white-space: normal;
+}
+
+.lamusa-allergens-table thead th[data-tooltip]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #000000;
+    z-index: 1000;
+}
+
+.no-allergens-info,
+.no-allergens-configured {
+    text-align: center;
+    padding: 50px 20px;
+    background: var(--lamusa-secondary-color);
+    border: 2px solid var(--lamusa-primary-color);
+    margin: 30px 0;
+    font-family: var(--lamusa-font-family-primary);
+    color: #000000;
+}
+
+.no-allergens-info h3,
+.no-allergens-configured h3 {
+    font-family: var(--lamusa-font-family-quaternary);
+    color: var(--lamusa-primary-color);
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+.show-allergens {
+	display: none;
+}
+
+.menu-view-allergens .show-allergens {
+	display: block;
+}
+
+.menu-view-allergens .show-menu {
+	display: none;
+}
+
+@media (max-width: 1200px) {
+    .lamusa-allergens-table-container {
+        padding: 20px;
+        overflow-x: auto;
+    }
+    
+    .lamusa-allergens-table {
+        min-width: 800px;
+    }
+}
+
+@media (max-width: 768px) {
+    .lamusa-allergens-table-container {
+        padding: 15px;
+    }
+    
+    .lamusa-allergens-table thead th.dish-column {
+        width: 250px;
+        font-size: 14px;
+    }
+    
+    .lamusa-allergens-table thead th.allergen-column {
+        width: 40px;
+        padding: 8px 3px;
+    }
+    
+    .lamusa-allergens-table thead th.allergen-column i {
+        font-size: 20px;
+    }
+    
+    .lamusa-allergens-table tbody td.dish-name {
+        padding: 12px 15px;
+    }
+    
+    .allergens-legend {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+}

@@ -47,8 +47,7 @@ function lamusa_register_elementor_categories($elements_manager) {
  */
 function lamusa_register_elementor_widgets() {
     $widget_files = [
-        'allergen-info-widget.php',
-        'menu-navigator-widget.php'
+        'allergen-info-widget.php'
     ];
     
     foreach ($widget_files as $file) {
@@ -61,10 +60,6 @@ function lamusa_register_elementor_widgets() {
     // Registrar cada widget
     if (class_exists('LaMusaAllergenInfoWidget')) {
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \LaMusaAllergenInfoWidget());
-    }
-    
-    if (class_exists('LaMusaMenuNavigatorWidget')) {
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \LaMusaMenuNavigatorWidget());
     }
     
     error_log('La Musa Core: Widgets registrados');

@@ -130,6 +130,14 @@ function lamusa_register_restaurant_fields() {
                 'layout' => 'block',
                 'sub_fields' => array(
                     array(
+                        'key' => 'field_restaurant_url_local',
+                        'label' => 'Local (Página Interna)',
+                        'name' => 'url_local',
+                        'type' => 'url',
+                        'instructions' => 'URL de la página interna del local/restaurante',
+                        'wrapper' => array('width' => '50'),
+                    ),
+                    array(
                         'key' => 'field_restaurant_url_breakfast',
                         'label' => 'Desayunos/Brunch',
                         'name' => 'url_breakfast',
@@ -353,6 +361,9 @@ function lamusa_register_weekly_menu_fields() {
                 'required' => 0,
                 'layout' => 'block',
                 'button_label' => 'Añadir Día',
+                'collapsed' => 'field_menu_day_name',
+                'min' => 0,
+                'max' => 0,
                 'sub_fields' => array(
                     array(
                         'key' => 'field_menu_day_name',
@@ -371,37 +382,7 @@ function lamusa_register_weekly_menu_fields() {
                         ),
                         'default_value' => 'lunes',
                         'ui' => 1,
-                        'wrapper' => array('width' => '25'),
-                    ),
-                    array(
-                        'key' => 'field_menu_day_date',
-                        'label' => 'Fecha Específica',
-                        'name' => 'day_date',
-                        'type' => 'date_picker',
-                        'instructions' => 'Fecha específica para este día (opcional)',
-                        'required' => 0,
-                        'display_format' => 'd/m/Y',
-                        'return_format' => 'Y-m-d',
-                        'wrapper' => array('width' => '25'),
-                    ),
-                    array(
-                        'key' => 'field_menu_day_active',
-                        'label' => 'Día Activo',
-                        'name' => 'day_active',
-                        'type' => 'true_false',
-                        'instructions' => 'Marcar si hay menú este día',
-                        'default_value' => 1,
-                        'ui' => 1,
-                        'wrapper' => array('width' => '25'),
-                    ),
-                    array(
-                        'key' => 'field_menu_day_special_note',
-                        'label' => 'Nota Especial',
-                        'name' => 'special_note',
-                        'type' => 'text',
-                        'instructions' => 'Nota especial para este día (ej: "Cerrado", "Solo cena")',
-                        'required' => 0,
-                        'wrapper' => array('width' => '25'),
+                        'wrapper' => array('width' => '100'),
                     ),
                     array(
                         'key' => 'field_menu_day_content',
@@ -475,15 +456,6 @@ function lamusa_register_weekly_menu_fields() {
                                 'required' => 1,
                                 'placeholder' => 'Ensalada Malagueña con Bacalao',
                                 'wrapper' => array('width' => '100'),
-                            ),
-                            array(
-                                'key' => 'field_dish_description',
-                                'label' => 'Descripción',
-                                'name' => 'dish_description',
-                                'type' => 'textarea',
-                                'required' => 0,
-                                'rows' => 2,
-                                'placeholder' => 'Breve descripción del plato y sus ingredientes',
                             ),
                             array(
                                 'key' => 'field_dish_allergens_message',
@@ -928,17 +900,25 @@ function lamusa_load_allergen_choices($field) {
             
             error_log('La Musa Core: Alérgeno ' . $allergen->name . ' - Activo: ' . $active . ' - Icono: ' . $icon);
             
-            // Crear label básico primero
-            $label = esc_html($allergen->name);
+            // Crear label con icono delante del nombre
+            $label = '';
             
-            // Si tiene icono, añadirlo
-            if ($icon) {
-                $color = $color ?: '#333333';
-                $label = '<span class="allergen-choice-item" style="color: ' . esc_attr($color) . ';">';
-                $label .= '<i class="' . esc_attr($icon) . '"></i> ';
-                $label .= esc_html($allergen->name);
-                $label .= '</span>';
+            // Intentar obtener icono personalizado primero
+            if (function_exists('lamusa_get_custom_allergen_icon')) {
+                $custom_icon = lamusa_get_custom_allergen_icon($allergen->term_id);
+                if ($custom_icon) {
+                    $label = '<img src="' . esc_url($custom_icon['url']) . '" style="width: 16px; height: 16px; margin-right: 8px; vertical-align: middle; object-fit: contain;">';
+                }
             }
+            
+            // Si no hay icono personalizado, usar el por defecto
+            if (empty($label)) {
+                if ($icon) {
+                    $label = '<i class="' . esc_attr($icon) . '" style="color: ' . esc_attr($color) . '; font-size: 16px; margin-right: 8px; vertical-align: middle;"></i>';
+                }
+            }
+            
+            $label .= esc_html($allergen->name);
             
             $field['choices'][$allergen->term_id] = $label;
         }
@@ -959,13 +939,28 @@ function lamusa_load_allergen_choices($field) {
                 $icon = get_term_meta($allergen->term_id, 'allergen_icon', true);
                 $color = get_term_meta($allergen->term_id, 'allergen_color', true) ?: '#333333';
                 
-                $label = esc_html($allergen->name);
-                if ($icon) {
-                    $label = '<span class="allergen-choice-item" style="color: ' . esc_attr($color) . ';">';
-                    $label .= '<i class="' . esc_attr($icon) . '"></i> ';
-                    $label .= esc_html($allergen->name);
-                    $label .= '</span>';
+                // Crear label con icono delante del nombre
+                $label = '';
+                
+                // Intentar obtener icono personalizado primero
+                if (function_exists('lamusa_get_custom_allergen_icon')) {
+                    $custom_icon = lamusa_get_custom_allergen_icon($allergen->term_id);
+                    if ($custom_icon) {
+                        $label = '<img src="' . esc_url($custom_icon['url']) . '" style="width: 16px; height: 16px; margin-right: 8px; vertical-align: middle; object-fit: contain;">';
+                    }
                 }
+                
+                // Si no hay icono personalizado, usar el por defecto
+                if (empty($label)) {
+                    $icon = get_term_meta($allergen->term_id, 'allergen_icon', true);
+                    $color = get_term_meta($allergen->term_id, 'allergen_color', true);
+                    
+                    if ($icon) {
+                        $label = '<i class="' . esc_attr($icon) . '" style="color: ' . esc_attr($color) . '; font-size: 16px; margin-right: 8px; vertical-align: middle;"></i>';
+                    }
+                }
+                
+                $label .= esc_html($allergen->name);
                 
                 $field['choices'][$allergen->term_id] = $label;
             }
@@ -984,7 +979,7 @@ function lamusa_load_allergen_choices($field) {
 }
 
 /**
- * Añadir CSS personalizado para los checkboxes de alérgenos en el admin
+ * Añadir CSS simplificado para los checkboxes de alérgenos en el admin
  */
 add_action('acf/input/admin_head', 'lamusa_allergen_admin_css');
 function lamusa_allergen_admin_css() {
@@ -993,72 +988,49 @@ function lamusa_allergen_admin_css() {
     if ($post_type === 'weekly_menu') {
         ?>
         <style>
+        /* Checkboxes de alérgenos simplificados */
         .acf-field[data-name="allergens_contains"] .acf-checkbox-list,
         .acf-field[data-name="allergens_traces"] .acf-checkbox-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
             margin-top: 10px;
+        }
+
+        .acf-field[data-name="allergens_contains"] .acf-checkbox-list::before, 
+        .acf-field[data-name="allergens_traces"] .acf-checkbox-list::before {
+            display: none;
         }
         
         .acf-field[data-name="allergens_contains"] .acf-checkbox-list li,
         .acf-field[data-name="allergens_traces"] .acf-checkbox-list li {
             margin: 0;
             padding: 8px 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 6px;
-            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #ffffff;
             transition: all 0.2s ease;
-            cursor: pointer;
         }
         
         .acf-field[data-name="allergens_contains"] .acf-checkbox-list li:hover,
         .acf-field[data-name="allergens_traces"] .acf-checkbox-list li:hover {
             border-color: #007cba;
-            background: #f0f8ff;
-        }
-        
-        .acf-field[data-name="allergens_contains"] .acf-checkbox-list li.selected,
-        .acf-field[data-name="allergens_traces"] .acf-checkbox-list li.selected {
-            border-color: #00a32a;
-            background: #f0fff4;
-        }
-        
-        /* Estilo específico para "contiene" vs "trazas" */
-        .acf-field[data-name="allergens_contains"] .acf-checkbox-list li.selected {
-            border-color: #d63638;
-            background: #fff5f5;
-        }
-        
-        .acf-field[data-name="allergens_traces"] .acf-checkbox-list li.selected {
-            border-color: #dba617;
-            background: #fffbf0;
+            background: #f9f9f9;
         }
         
         .acf-field[data-name="allergens_contains"] .acf-checkbox-list label,
         .acf-field[data-name="allergens_traces"] .acf-checkbox-list label {
             display: flex;
             align-items: center;
-            font-weight: 500;
+            font-weight: normal;
             cursor: pointer;
             margin: 0;
+            color: #333;
         }
         
         .acf-field[data-name="allergens_contains"] .acf-checkbox-list input[type="checkbox"],
         .acf-field[data-name="allergens_traces"] .acf-checkbox-list input[type="checkbox"] {
             margin-right: 8px;
-            transform: scale(1.2);
-        }
-        
-        .allergen-choice-item {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
-        
-        .allergen-choice-item i {
-            font-size: 16px;
-            margin-right: 6px;
         }
         
         /* Mensaje explicativo más visible */
@@ -1106,44 +1078,17 @@ function lamusa_allergen_admin_css() {
         @media (max-width: 768px) {
             .acf-field[data-name="allergens_contains"] .acf-checkbox-list,
             .acf-field[data-name="allergens_traces"] .acf-checkbox-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .acf-field[data-name="allergens_contains"] .acf-checkbox-list,
+            .acf-field[data-name="allergens_traces"] .acf-checkbox-list {
                 grid-template-columns: 1fr;
             }
         }
         </style>
-        
-        <script>
-        jQuery(document).ready(function($) {
-            // Añadir clase 'selected' a los checkboxes marcados
-            function updateSelectedState() {
-                $('.acf-field[data-name="allergens_contains"] .acf-checkbox-list li, .acf-field[data-name="allergens_traces"] .acf-checkbox-list li').each(function() {
-                    var $li = $(this);
-                    var $checkbox = $li.find('input[type="checkbox"]');
-                    
-                    if ($checkbox.is(':checked')) {
-                        $li.addClass('selected');
-                    } else {
-                        $li.removeClass('selected');
-                    }
-                });
-            }
-            
-            // Ejecutar al cargar
-            updateSelectedState();
-            
-            // Ejecutar cuando cambie el estado de los checkboxes
-            $(document).on('change', '.acf-field[data-name="allergens_contains"] input[type="checkbox"], .acf-field[data-name="allergens_traces"] input[type="checkbox"]', function() {
-                updateSelectedState();
-            });
-            
-            // Hacer clickeable toda la celda
-            $(document).on('click', '.acf-field[data-name="allergens_contains"] .acf-checkbox-list li, .acf-field[data-name="allergens_traces"] .acf-checkbox-list li', function(e) {
-                if (e.target.type !== 'checkbox') {
-                    var $checkbox = $(this).find('input[type="checkbox"]');
-                    $checkbox.prop('checked', !$checkbox.prop('checked')).trigger('change');
-                }
-            });
-        });
-        </script>
         <?php
     }
 }
