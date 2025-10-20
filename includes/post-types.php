@@ -182,8 +182,9 @@ function lamusa_weekly_menu_columns($columns) {
     $new_columns['cb'] = $columns['cb'];
     $new_columns['title'] = $columns['title'];
     $new_columns['menu_restaurant'] = __('Restaurante', 'lamusa-core');
-    $new_columns['menu_start_date'] = __('Fecha Inicio', 'lamusa-core');
-    $new_columns['menu_end_date'] = __('Fecha Fin', 'lamusa-core');
+    $new_columns['menu_dates'] = __('Período', 'lamusa-core');
+    $new_columns['menu_status'] = __('Estado', 'lamusa-core');
+    $new_columns['menu_active'] = __('Activo', 'lamusa-core');
     $new_columns['date'] = $columns['date'];
     
     return $new_columns;
@@ -198,20 +199,87 @@ function lamusa_weekly_menu_column_content($column, $post_id) {
         case 'menu_restaurant':
             $restaurant = get_field('restaurant', $post_id);
             if ($restaurant) {
-                echo '<a href="' . get_edit_post_link($restaurant->ID) . '">' . esc_html($restaurant->post_title) . '</a>';
+                $is_active_for_restaurant = lamusa_is_menu_active_for_restaurant($post_id);
+                $badge = '';
+                if ($is_active_for_restaurant) {
+                    $badge = ' <span style="background:#10b981;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;margin-left:5px;">ACTIVO</span>';
+                }
+                echo '<a href="' . get_edit_post_link($restaurant->ID) . '">' . esc_html($restaurant->post_title) . '</a>' . $badge;
             } else {
                 echo '—';
             }
             break;
-        case 'menu_start_date':
+        case 'menu_dates':
             $start_date = get_field('start_date', $post_id);
-            echo $start_date ? date('d/m/Y', strtotime($start_date)) : '—';
-            break;
-        case 'menu_end_date':
             $end_date = get_field('end_date', $post_id);
-            echo $end_date ? date('d/m/Y', strtotime($end_date)) : '—';
+            if ($start_date && $end_date) {
+                echo '<strong>' . date('d/m/Y', strtotime($start_date)) . '</strong> — <strong>' . date('d/m/Y', strtotime($end_date)) . '</strong>';
+                
+                // Calcular duración
+                $days = (strtotime($end_date) - strtotime($start_date)) / (60 * 60 * 24) + 1;
+                echo '<br><small style="color:#666;">(' . $days . ' días)</small>';
+            } else {
+                echo '—';
+            }
+            break;
+        case 'menu_status':
+            $start_date = get_field('start_date', $post_id);
+            $end_date = get_field('end_date', $post_id);
+            $today = current_time('Y-m-d');
+            
+            if ($start_date && $end_date) {
+                if ($today < $start_date) {
+                    echo '<span style="color:#3b82f6;font-weight:600;">● Futuro</span>';
+                    $days_until = (strtotime($start_date) - strtotime($today)) / (60 * 60 * 24);
+                    echo '<br><small style="color:#666;">Comienza en ' . ceil($days_until) . ' días</small>';
+                } elseif ($today > $end_date) {
+                    echo '<span style="color:#ef4444;font-weight:600;">● Expirado</span>';
+                    $days_ago = (strtotime($today) - strtotime($end_date)) / (60 * 60 * 24);
+                    echo '<br><small style="color:#666;">Hace ' . ceil($days_ago) . ' días</small>';
+                } else {
+                    echo '<span style="color:#10b981;font-weight:600;">● En Curso</span>';
+                    $days_left = (strtotime($end_date) - strtotime($today)) / (60 * 60 * 24);
+                    echo '<br><small style="color:#666;">Quedan ' . ceil($days_left) . ' días</small>';
+                }
+            } else {
+                echo '—';
+            }
+            break;
+        case 'menu_active':
+            $is_active = get_field('menu_active', $post_id);
+            if ($is_active == 1 || $is_active === '1' || $is_active === true) {
+                echo '<span style="color:#10b981;font-size:20px;">✓</span>';
+            } else {
+                echo '<span style="color:#ef4444;font-size:20px;">✗</span>';
+            }
             break;
     }
+}
+
+/**
+ * Verificar si un menú es el activo para su restaurante
+ */
+function lamusa_is_menu_active_for_restaurant($menu_id) {
+    $restaurant = get_field('restaurant', $menu_id);
+    if (!$restaurant) {
+        return false;
+    }
+    
+    $is_active = get_field('menu_active', $menu_id);
+    if (!($is_active == 1 || $is_active === '1' || $is_active === true)) {
+        return false;
+    }
+    
+    $start_date = get_field('start_date', $menu_id);
+    $end_date = get_field('end_date', $menu_id);
+    $today = current_time('Y-m-d');
+    
+    // Verificar si está en el rango de fechas
+    if ($start_date && $end_date && $today >= $start_date && $today <= $end_date) {
+        return true;
+    }
+    
+    return false;
 }
 
 /**
@@ -219,8 +287,8 @@ function lamusa_weekly_menu_column_content($column, $post_id) {
  */
 add_filter('manage_edit-weekly_menu_sortable_columns', 'lamusa_weekly_menu_sortable_columns');
 function lamusa_weekly_menu_sortable_columns($columns) {
-    $columns['menu_start_date'] = 'menu_start_date';
-    $columns['menu_end_date'] = 'menu_end_date';
+    $columns['menu_dates'] = 'start_date';
+    $columns['menu_restaurant'] = 'restaurant';
     return $columns;
 }
 
@@ -233,13 +301,80 @@ function lamusa_weekly_menu_orderby($query) {
         return;
     }
 
-    if ('menu_start_date' === $query->get('orderby')) {
+    if ('start_date' === $query->get('orderby')) {
         $query->set('meta_key', 'start_date');
         $query->set('orderby', 'meta_value');
     }
 
-    if ('menu_end_date' === $query->get('orderby')) {
-        $query->set('meta_key', 'end_date');
+    if ('restaurant' === $query->get('orderby')) {
+        $query->set('meta_key', 'restaurant');
         $query->set('orderby', 'meta_value');
     }
+}
+
+/**
+ * Añadir estilos personalizados a la lista de menús
+ */
+add_action('admin_head', 'lamusa_weekly_menu_admin_styles');
+function lamusa_weekly_menu_admin_styles() {
+    global $post_type;
+    if ($post_type === 'weekly_menu') {
+        ?>
+        <style>
+        .wp-list-table .column-menu_restaurant {
+            width: 20%;
+        }
+        .wp-list-table .column-menu_dates {
+            width: 20%;
+        }
+        .wp-list-table .column-menu_status {
+            width: 15%;
+        }
+        .wp-list-table .column-menu_active {
+            width: 8%;
+            text-align: center;
+        }
+        .wp-list-table .column-menu_active span {
+            display: inline-block;
+        }
+        
+        /* Resaltar fila del menú activo */
+        .wp-list-table tr.menu-active-row {
+            background: #f0fdf4 !important;
+        }
+        .wp-list-table tr.menu-expired-row {
+            background: #fef2f2 !important;
+            opacity: 0.7;
+        }
+        .wp-list-table tr.menu-future-row {
+            background: #eff6ff !important;
+        }
+        </style>
+        <?php
+    }
+}
+
+/**
+ * Añadir clases CSS a las filas según el estado
+ */
+add_filter('post_class', 'lamusa_weekly_menu_row_class', 10, 3);
+function lamusa_weekly_menu_row_class($classes, $class, $post_id) {
+    if (get_post_type($post_id) === 'weekly_menu') {
+        if (lamusa_is_menu_active_for_restaurant($post_id)) {
+            $classes[] = 'menu-active-row';
+        } else {
+            $start_date = get_field('start_date', $post_id);
+            $end_date = get_field('end_date', $post_id);
+            $today = current_time('Y-m-d');
+            
+            if ($start_date && $end_date) {
+                if ($today < $start_date) {
+                    $classes[] = 'menu-future-row';
+                } elseif ($today > $end_date) {
+                    $classes[] = 'menu-expired-row';
+                }
+            }
+        }
+    }
+    return $classes;
 }
