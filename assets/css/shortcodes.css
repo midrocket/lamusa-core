@@ -588,6 +588,7 @@
 .mobile-day-header:hover {
     background: rgba(255, 226, 208, 0.8);
     text-decoration: none;
+    color: var(--lamusa-primary-color);
 }
 
 .mobile-day-item.active .mobile-day-header {
@@ -770,10 +771,7 @@
 }
 
 .lamusa-mobile-restaurants-bottom {
-    background: var(--lamusa-secondary-color);
-    padding: 25px;
-    border-top: 2px solid var(--lamusa-primary-color);
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .mobile-other-restaurants-title {
@@ -790,7 +788,7 @@
 .mobile-restaurants-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 5px;
+    gap: 2px;
 }
 
 .mobile-restaurant-item {
@@ -814,6 +812,7 @@
 	font-size: 2.5em;
 	width: 100%;
 	justify-content: center;
+	gap: 5px;
 }
 
 .mobile-restaurant-item:hover {
@@ -1103,7 +1102,7 @@
     
     .action-button {
         flex: none;
-        padding: 18px 20px;
+        /* padding: 18px 20px; */
         font-size: 5em;
         margin: 5px 20px;
     }
@@ -1115,8 +1114,8 @@
 
 @media (max-width: 480px) {
     .action-button {
-        padding: 15px 15px;
-        font-size: 14px;
+        /* padding: 15px 15px; */
+        /* font-size: 14px; */
     }
 }
 

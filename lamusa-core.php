@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: La Musa Core
- * Plugin URI: https://lamusa.es
+ * Plugin URI: https://www.midrocket.com
  * Description: Plugin para gestión de restaurantes, menús semanales y alérgenos para el grupo La Musa
- * Version: 1.3.1
- * Author: Eduardo MC
+ * Version: 1.3.3
+ * Author: Midrocket
+ * Author URI: https://www.midrocket.com
  * Text Domain: lamusa-core
  * Domain Path: /languages
  */

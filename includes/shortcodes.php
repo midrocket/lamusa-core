@@ -237,7 +237,14 @@ function lamusa_render_menu_view($restaurant_id, $day_name = '', $atts = array()
     $menu = lamusa_get_restaurant_active_menu($restaurant_id);
     
     if (!$menu) {
+        // Mostrar mensaje de no hay menú
         echo '<div class="lamusa-no-menu">No hay menú semanal disponible para este restaurante.</div>';
+        
+        // Renderizar barra de restaurantes en mobile aunque no haya menú
+        echo '<div class="lamusa-mobile-layout">';
+        lamusa_render_mobile_restaurants_bottom($restaurant_id);
+        echo '</div>';
+        
         return;
     }
     
@@ -260,16 +267,23 @@ function lamusa_render_allergens_view($restaurant_id, $atts = array()) {
         return;
     }
     
+    // SECCIÓN 1: Barra superior con todos los restaurantes (siempre se muestra)
+    lamusa_render_restaurants_bar($restaurant_id);
+    
     // Obtener menú activo usando la misma función que la vista de días
     $menu = lamusa_get_restaurant_active_menu($restaurant_id);
     
     if (!$menu) {
+        // Mostrar mensaje de no hay menú
         echo '<div class="lamusa-no-menu">No hay información de alérgenos disponible para este restaurante.</div>';
+        
+        // Renderizar barra de restaurantes en mobile aunque no haya menú
+        echo '<div class="lamusa-mobile-layout">';
+        lamusa_render_mobile_restaurants_bottom($restaurant_id);
+        echo '</div>';
+        
         return;
     }
-    
-    // SECCIÓN 1: Barra superior con todos los restaurantes (igual que en menú)
-    lamusa_render_restaurants_bar($restaurant_id);
     
     // SECCIÓN 2: Submenú de días (igual que en menú pero ninguno activo)
     lamusa_render_days_submenu_for_allergens($menu, $atts);
@@ -277,6 +291,11 @@ function lamusa_render_allergens_view($restaurant_id, $atts = array()) {
     // SECCIÓN 3: Cabecera específica para alérgenos + tabla
     lamusa_render_allergens_header($restaurant);
     lamusa_render_allergens_table($menu);
+    
+    // Barra de restaurantes en mobile
+    echo '<div class="lamusa-mobile-layout">';
+    lamusa_render_mobile_restaurants_bottom($restaurant_id);
+    echo '</div>';
 }
 
 /**
@@ -935,6 +954,9 @@ function lamusa_render_mobile_day_content($menu, $selected_day) {
  * Renderizar barra de restaurantes adicional para mobile (abajo)
  */
 function lamusa_render_mobile_restaurants_bottom($current_restaurant_id) {
+    // Asegurar que sea un ID numérico
+    $current_restaurant_id = is_object($current_restaurant_id) ? $current_restaurant_id->ID : intval($current_restaurant_id);
+    
     $restaurants = get_posts(array(
         'post_type' => 'restaurant',
         'post_status' => 'publish',
@@ -1268,31 +1290,30 @@ function lamusa_render_restaurant_navigation($current_restaurant_id, $current_vi
         return; // No mostrar navegación si solo hay un restaurante
     }
     
-    echo '<div class="lamusa-restaurant-navigation">';
-    echo '<h4>Otros Restaurantes:</h4>';
-    echo '<div class="restaurant-nav-items">';
+    // echo '<div class="lamusa-restaurant-navigation">';
+    // echo '<div class="restaurant-nav-items">';
     
-    foreach ($restaurants as $restaurant) {
-        if ($restaurant->ID == $current_restaurant_id) {
-            continue; // Saltar el restaurante actual
-        }
+    // foreach ($restaurants as $restaurant) {
+    //     if ($restaurant->ID == $current_restaurant_id) {
+    //         continue; // Saltar el restaurante actual
+    //     }
         
-        $restaurant_title = get_field('restaurant_title', $restaurant->ID) ?: $restaurant->post_title;
-        $restaurant_title_secondary = get_field('restaurant_title_secondary', $restaurant->ID);
+    //     $restaurant_title = get_field('restaurant_title', $restaurant->ID) ?: $restaurant->post_title;
+    //     $restaurant_title_secondary = get_field('restaurant_title_secondary', $restaurant->ID);
         
-        $display_name = $restaurant_title;
-        if ($restaurant_title_secondary) {
-            $display_name .= ' ' . $restaurant_title_secondary;
-        }
+    //     $display_name = $restaurant_title;
+    //     if ($restaurant_title_secondary) {
+    //         $display_name .= ' ' . $restaurant_title_secondary;
+    //     }
         
-        $restaurant_url = lamusa_get_restaurant_url($restaurant, $current_view);
+    //     $restaurant_url = lamusa_get_restaurant_url($restaurant, $current_view);
         
-        echo '<a href="' . esc_url($restaurant_url) . '" class="restaurant-nav-item">';
-        echo esc_html($display_name);
-        echo '</a>';
-    }
+    //     echo '<a href="' . esc_url($restaurant_url) . '" class="restaurant-nav-item">';
+    //     echo esc_html($display_name);
+    //     echo '</a>';
+    // }
     
-    echo '</div>';
-    echo '</div>';
+    // echo '</div>';
+    // echo '</div>';
 }
 
