@@ -260,23 +260,8 @@ function lamusa_render_allergens_view($restaurant_id, $atts = array()) {
         return;
     }
     
-    // Obtener menú activo
-    $menu_posts = get_posts(array(
-        'post_type' => 'weekly_menu',
-        'post_status' => 'publish',
-        'posts_per_page' => 1,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'meta_query' => array(
-            array(
-                'key' => 'restaurant',
-                'value' => $restaurant_id,
-                'compare' => '='
-            )
-        )
-    ));
-    
-    $menu = !empty($menu_posts) ? $menu_posts[0] : null;
+    // Obtener menú activo usando la misma función que la vista de días
+    $menu = lamusa_get_restaurant_active_menu($restaurant_id);
     
     if (!$menu) {
         echo '<div class="lamusa-no-menu">No hay información de alérgenos disponible para este restaurante.</div>';
@@ -444,10 +429,52 @@ function lamusa_render_menu_content_section($restaurant_id, $menu, $selected_day
  * Obtener menú activo de un restaurante
  */
 function lamusa_get_restaurant_active_menu($restaurant_id) {
+    $today = current_time('Y-m-d');
+    
+    // Primero intentar obtener menú activo dentro del rango de fechas
     $menu_posts = get_posts(array(
         'post_type' => 'weekly_menu',
         'post_status' => 'publish',
-        'posts_per_page' => 1,
+        'posts_per_page' => -1,
+        'orderby' => 'meta_value',
+        'order' => 'DESC',
+        'meta_key' => 'start_date',
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => 'restaurant',
+                'value' => $restaurant_id,
+                'compare' => '='
+            ),
+            array(
+                'key' => 'start_date',
+                'value' => $today,
+                'compare' => '<='
+            ),
+            array(
+                'key' => 'end_date',
+                'value' => $today,
+                'compare' => '>='
+            )
+        )
+    ));
+    
+    // Filtrar solo los que tienen menu_active = 1
+    if (!empty($menu_posts)) {
+        foreach ($menu_posts as $menu) {
+            $is_active = get_post_meta($menu->ID, 'menu_active', true);
+            // Verificar si es 1, "1", true o cualquier valor truthy
+            if ($is_active == 1 || $is_active === '1' || $is_active === true) {
+                return $menu;
+            }
+        }
+    }
+    
+    // Fallback: buscar el menú más reciente activo sin filtro de fecha
+    $all_menus = get_posts(array(
+        'post_type' => 'weekly_menu',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
         'orderby' => 'date',
         'order' => 'DESC',
         'meta_query' => array(
@@ -459,23 +486,12 @@ function lamusa_get_restaurant_active_menu($restaurant_id) {
         )
     ));
     
-    if (!empty($menu_posts)) {
-        return $menu_posts[0];
-    }
-    
-    // Fallback: buscar sin meta_query
-    $all_menus = get_posts(array(
-        'post_type' => 'weekly_menu',
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-        'orderby' => 'date',
-        'order' => 'DESC'
-    ));
-    
-    foreach ($all_menus as $menu_post) {
-        $menu_restaurant = get_field('restaurant', $menu_post->ID);
-        if ($menu_restaurant && ($menu_restaurant == $restaurant_id || (is_object($menu_restaurant) && $menu_restaurant->ID == $restaurant_id))) {
-            return $menu_post;
+    if (!empty($all_menus)) {
+        foreach ($all_menus as $menu) {
+            $is_active = get_post_meta($menu->ID, 'menu_active', true);
+            if ($is_active == 1 || $is_active === '1' || $is_active === true) {
+                return $menu;
+            }
         }
     }
     

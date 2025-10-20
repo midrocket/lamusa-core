@@ -234,6 +234,8 @@
     width: 200px;
     padding: 20px;
     border-right: 2px solid var(--lamusa-primary-color);
+    height: 100%;
+    justify-content: center;
 }
 
 .content-menu-dates .date-range {
@@ -1082,7 +1084,7 @@
     margin-bottom: -0.15em;
 }
 
-/* Responsive para botones de acciÃ³n */
+/* Responsive para botones de acciÃƒÂ³n */
 @media (max-width: 768px) {
     .action-buttons-container {
         flex-direction: column;
@@ -1175,7 +1177,7 @@
 .lamusa-allergens-table tbody tr.group-row .group-title {
     color: #fff;
     padding: 15px 20px;
-    font-family: var(--lamusa-font-family-quaternary);
+    font-family: var(--lamusa-font-family-secondary);
     font-size: 1.2em;
     font-weight: bold;
     text-transform: uppercase;

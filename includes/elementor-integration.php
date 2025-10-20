@@ -23,8 +23,6 @@ function lamusa_init_elementor() {
     
     // Registrar etiquetas dinámicas
     add_action('elementor/dynamic_tags/register_tags', 'lamusa_register_dynamic_tags');
-    
-    error_log('La Musa Core: Hooks de Elementor registrados');
 }
 add_action('init', 'lamusa_init_elementor');
 
@@ -129,14 +127,5 @@ function lamusa_register_dynamic_tags($dynamic_tags) {
  * Debug de estado de Elementor
  */
 add_action('wp_loaded', function() {
-    if (is_admin()) {
-        error_log('La Musa Core: Estado de Elementor:');
-        error_log('- Elementor\\Plugin existe: ' . (class_exists('Elementor\\Plugin') ? 'SÍ' : 'NO'));
-        error_log('- elementor/loaded ejecutado: ' . (did_action('elementor/loaded') ? 'SÍ' : 'NO'));
-        
-        if (class_exists('Elementor\\Plugin')) {
-            $elementor = \Elementor\Plugin::instance();
-            error_log('- Dynamic Tags Manager existe: ' . (isset($elementor->dynamic_tags) ? 'SÍ' : 'NO'));
-        }
-    }
+    // Debug removido para limpiar logs
 });

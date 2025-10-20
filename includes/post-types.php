@@ -84,7 +84,7 @@ function lamusa_register_weekly_menu_post_type() {
         'new_item'              => __('Nuevo Menú Semanal', 'lamusa-core'),
         'edit_item'             => __('Editar Menú Semanal', 'lamusa-core'),
         'view_item'             => __('Ver Menú Semanal', 'lamusa-core'),
-        'all_items'             => __('Gestión de Menús', 'lamusa-core'),
+        'all_items'             => __('Todos los Menús', 'lamusa-core'),
         'search_items'          => __('Buscar Menús', 'lamusa-core'),
         'parent_item_colon'     => __('Menú Padre:', 'lamusa-core'),
         'not_found'             => __('No se encontraron menús.', 'lamusa-core'),
@@ -112,7 +112,7 @@ function lamusa_register_weekly_menu_post_type() {
         'capability_type'    => 'post',
         'has_archive'        => false, // No necesitamos archivo público
         'hierarchical'       => false,
-        'supports'           => array('title', 'custom-fields'),
+        'supports'           => array('title', 'thumbnail', 'custom-fields'),
         'show_in_rest'       => true,
         'rest_base'          => 'weekly-menus',
         'rest_controller_class' => 'WP_REST_Posts_Controller',

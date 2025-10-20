@@ -526,7 +526,8 @@ function lamusa_register_weekly_menu_fields() {
 /**
  * Validación personalizada para fechas de menús semanales
  */
-add_filter('acf/validate_value/name=end_date', 'lamusa_validate_menu_dates', 10, 4);
+// Temporalmente deshabilitado - causa timeout en AJAX
+// add_filter('acf/validate_value/name=end_date', 'lamusa_validate_menu_dates', 10, 4);
 function lamusa_validate_menu_dates($valid, $value, $field, $input) {
     if (!$valid) {
         return $valid;
@@ -867,20 +868,29 @@ function lamusa_ensure_allergens_exist() {
 }
 
 /**
- * Poblar dinámicamente las opciones de alérgenos con iconos
+ * Poblar dinámicamente las opciones de alérgenos (OPTIMIZADO)
+ * Solo se ejecuta en páginas de edición, nunca en AJAX
  */
 add_filter('acf/load_field/name=allergens_contains', 'lamusa_load_allergen_choices');
 add_filter('acf/load_field/name=allergens_traces', 'lamusa_load_allergen_choices');
 function lamusa_load_allergen_choices($field) {
-    // Debug: log que se está ejecutando la función
-    error_log('La Musa Core: Cargando opciones de alérgenos para campo: ' . $field['name']);
-    
-    // Limpiar las opciones de "loading"
-    if (isset($field['choices']['loading'])) {
-        unset($field['choices']['loading']);
+    // NO ejecutar en AJAX ni durante autosave
+    if (wp_doing_ajax() || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
+        return $field;
     }
     
-    // Obtener todos los alérgenos sin filtros primero
+    // Usar caché estático para evitar múltiples consultas en la misma carga
+    static $cached_choices = null;
+    
+    if ($cached_choices !== null) {
+        $field['choices'] = $cached_choices;
+        return $field;
+    }
+    
+    // Limpiar opciones de loading
+    $field['choices'] = array();
+    
+    // Obtener todos los alérgenos
     $allergens = get_terms(array(
         'taxonomy' => 'allergen',
         'hide_empty' => false,
@@ -888,92 +898,42 @@ function lamusa_load_allergen_choices($field) {
         'order' => 'ASC'
     ));
     
-    error_log('La Musa Core: Encontrados ' . (is_array($allergens) ? count($allergens) : '0') . ' alérgenos');
+    // Si no hay alérgenos, intentar crearlos
+    if (empty($allergens) || is_wp_error($allergens)) {
+        lamusa_create_default_allergens_if_missing();
+        $allergens = get_terms(array(
+            'taxonomy' => 'allergen',
+            'hide_empty' => false,
+            'orderby' => 'name',
+            'order' => 'ASC'
+        ));
+    }
     
-    if ($allergens && !is_wp_error($allergens) && count($allergens) > 0) {
+    // Poblar opciones con iconos personalizados si existen
+    if (!empty($allergens) && !is_wp_error($allergens)) {
         foreach ($allergens as $allergen) {
-            // Por ahora, incluir todos los alérgenos independientemente del estado "activo"
-            // para debug
-            $icon = get_term_meta($allergen->term_id, 'allergen_icon', true);
-            $color = get_term_meta($allergen->term_id, 'allergen_color', true);
-            $active = get_term_meta($allergen->term_id, 'allergen_active', true);
-            
-            error_log('La Musa Core: Alérgeno ' . $allergen->name . ' - Activo: ' . $active . ' - Icono: ' . $icon);
-            
-            // Crear label con icono delante del nombre
             $label = '';
             
-            // Intentar obtener icono personalizado primero
+            // Intentar obtener icono personalizado de forma eficiente
             if (function_exists('lamusa_get_custom_allergen_icon')) {
                 $custom_icon = lamusa_get_custom_allergen_icon($allergen->term_id);
-                if ($custom_icon) {
-                    $label = '<img src="' . esc_url($custom_icon['url']) . '" style="width: 16px; height: 16px; margin-right: 8px; vertical-align: middle; object-fit: contain;">';
-                }
-            }
-            
-            // Si no hay icono personalizado, usar el por defecto
-            if (empty($label)) {
-                if ($icon) {
-                    $label = '<i class="' . esc_attr($icon) . '" style="color: ' . esc_attr($color) . '; font-size: 16px; margin-right: 8px; vertical-align: middle;"></i>';
+                if ($custom_icon && !empty($custom_icon['url'])) {
+                    $label = '<img src="' . esc_url($custom_icon['url']) . '" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;object-fit:contain;">';
                 }
             }
             
             $label .= esc_html($allergen->name);
-            
             $field['choices'][$allergen->term_id] = $label;
         }
-    } else {
-        error_log('La Musa Core: No se encontraron alérgenos, intentando crear por defecto');
-        
-        // Intentar crear alérgenos por defecto
-        lamusa_create_default_allergens_if_missing();
-        
-        // Intentar obtenerlos de nuevo
-        $allergens = get_terms(array(
-            'taxonomy' => 'allergen',
-            'hide_empty' => false
-        ));
-        
-        if ($allergens && !is_wp_error($allergens)) {
-            foreach ($allergens as $allergen) {
-                $icon = get_term_meta($allergen->term_id, 'allergen_icon', true);
-                $color = get_term_meta($allergen->term_id, 'allergen_color', true) ?: '#333333';
-                
-                // Crear label con icono delante del nombre
-                $label = '';
-                
-                // Intentar obtener icono personalizado primero
-                if (function_exists('lamusa_get_custom_allergen_icon')) {
-                    $custom_icon = lamusa_get_custom_allergen_icon($allergen->term_id);
-                    if ($custom_icon) {
-                        $label = '<img src="' . esc_url($custom_icon['url']) . '" style="width: 16px; height: 16px; margin-right: 8px; vertical-align: middle; object-fit: contain;">';
-                    }
-                }
-                
-                // Si no hay icono personalizado, usar el por defecto
-                if (empty($label)) {
-                    $icon = get_term_meta($allergen->term_id, 'allergen_icon', true);
-                    $color = get_term_meta($allergen->term_id, 'allergen_color', true);
-                    
-                    if ($icon) {
-                        $label = '<i class="' . esc_attr($icon) . '" style="color: ' . esc_attr($color) . '; font-size: 16px; margin-right: 8px; vertical-align: middle;"></i>';
-                    }
-                }
-                
-                $label .= esc_html($allergen->name);
-                
-                $field['choices'][$allergen->term_id] = $label;
-            }
-        }
     }
     
-    // Si después de todo aún no hay opciones, añadir mensaje de ayuda
+    // Si aún no hay opciones, mensaje de ayuda
     if (empty($field['choices'])) {
-        $field['choices']['help'] = '⚠️ No hay alérgenos disponibles. <a href="' . admin_url('edit-tags.php?taxonomy=allergen&post_type=weekly_menu') . '" target="_blank">Crear alérgenos</a>';
-        error_log('La Musa Core: No se pudieron cargar alérgenos después de todos los intentos');
+        $field['choices']['help'] = '⚠️ No hay alérgenos. <a href="' . admin_url('edit-tags.php?taxonomy=allergen&post_type=weekly_menu') . '">Crear alérgenos</a>';
     }
     
-    error_log('La Musa Core: Opciones finales del campo: ' . count($field['choices']));
+    // Guardar en caché
+    $cached_choices = $field['choices'];
     
     return $field;
 }

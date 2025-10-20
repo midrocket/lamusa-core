@@ -78,7 +78,7 @@ function lamusa_get_menu_day($menu_id, $day_name = null) {
         $day_name = $day_translations[$day_name] ?? $day_name;
     }
     
-    $menu_days = get_field('menu_days', $menu_id);
+    $menu_days = get_post_meta($menu_id, 'menu_days', true);
     
     if (!$menu_days) {
         return false;
@@ -145,7 +145,7 @@ function lamusa_get_featured_restaurants() {
  * @return bool
  */
 function lamusa_restaurant_has_weekly_menus($restaurant_id) {
-    $show_weekly_menu = get_field('show_weekly_menu', $restaurant_id);
+    $show_weekly_menu = get_post_meta($restaurant_id, 'show_weekly_menu', true);
     
     if (!$show_weekly_menu) {
         return false;
@@ -354,8 +354,8 @@ function lamusa_validate_menu_date_overlap($restaurant_id, $start_date, $end_dat
         return array(
             'menu_id' => $conflict->ID,
             'menu_title' => $conflict->post_title,
-            'start_date' => get_field('start_date', $conflict->ID),
-            'end_date' => get_field('end_date', $conflict->ID)
+            'start_date' => get_post_meta($conflict->ID, 'start_date', true),
+            'end_date' => get_post_meta($conflict->ID, 'end_date', true)
         );
     }
     
@@ -446,7 +446,7 @@ function lamusa_get_restaurant_menus($restaurant_id, $active_only = true) {
  * @return array Array con todos los alérgenos encontrados organizados
  */
 function lamusa_get_menu_allergens_summary($menu_id) {
-    $allergen_groups = get_field('allergen_groups', $menu_id);
+    $allergen_groups = get_post_meta($menu_id, 'allergen_groups', true);
     $summary = array(
         'contains' => array(),
         'traces' => array()
@@ -514,7 +514,7 @@ function lamusa_debug_menu_info($restaurant_id) {
     if ($menu) {
         echo '<p><strong>Menú encontrado:</strong> ' . $menu->post_title . '</p>';
         echo '<p><strong>ID:</strong> ' . $menu->ID . '</p>';
-        echo '<p><strong>Fechas:</strong> ' . get_field('start_date', $menu->ID) . ' - ' . get_field('end_date', $menu->ID) . '</p>';
+        echo '<p><strong>Fechas:</strong> ' . get_post_meta($menu->ID, 'start_date', true) . ' - ' . get_post_meta($menu->ID, 'end_date', true) . '</p>';
         
         $today = current_time('Y-m-d');
         $day_info = lamusa_get_menu_day($menu->ID);

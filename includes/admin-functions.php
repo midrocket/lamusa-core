@@ -63,8 +63,9 @@ function lamusa_remove_preview_button() {
 
 /**
  * Añadir metabox de información en el editor de menús semanales
+ * DESACTIVADO - Causa bucles infinitos
  */
-add_action('add_meta_boxes', 'lamusa_add_menu_info_metabox');
+// add_action('add_meta_boxes', 'lamusa_add_menu_info_metabox');
 function lamusa_add_menu_info_metabox() {
     add_meta_box(
         'lamusa_menu_info',
@@ -80,10 +81,20 @@ function lamusa_add_menu_info_metabox() {
  * Callback para el metabox de información del menú
  */
 function lamusa_menu_info_metabox_callback($post) {
-    $restaurant = get_field('restaurant', $post->ID);
-    $start_date = get_field('start_date', $post->ID);
-    $end_date = get_field('end_date', $post->ID);
-    $menu_active = get_field('menu_active', $post->ID);
+    // Solo mostrar información si el post ya existe (no en auto-draft)
+    if (!$post || $post->post_status === 'auto-draft') {
+        echo '<div class="lamusa-menu-info">';
+        echo '<p><em>' . __('Guarda el menú para ver la información', 'lamusa-core') . '</em></p>';
+        echo '</div>';
+        return;
+    }
+    
+    // Usar get_post_meta directamente para evitar que ACF cargue campos innecesarios
+    $restaurant_id = get_post_meta($post->ID, 'restaurant', true);
+    $restaurant = $restaurant_id ? get_post($restaurant_id) : null;
+    $start_date = get_post_meta($post->ID, 'start_date', true);
+    $end_date = get_post_meta($post->ID, 'end_date', true);
+    $menu_active = get_post_meta($post->ID, 'menu_active', true);
     
     echo '<div class="lamusa-menu-info">';
     
@@ -113,19 +124,24 @@ function lamusa_menu_info_metabox_callback($post) {
         echo '<p class="menu-draft"><span class="dashicons dashicons-hidden"></span> ' . __('Borrador', 'lamusa-core') . '</p>';
     }
     
-    // Verificar conflictos de fechas
-    if ($restaurant && $start_date && $end_date) {
-        $conflict = lamusa_validate_menu_date_overlap($restaurant->ID, $start_date, $end_date, $post->ID);
-        if ($conflict) {
-            echo '<div class="notice notice-warning inline">';
-            echo '<p><strong>' . __('¡Atención!', 'lamusa-core') . '</strong><br>';
-            echo sprintf(
-                __('Este menú se solapa con "%s" (%s - %s)', 'lamusa-core'),
-                $conflict['menu_title'],
-                date('d/m/Y', strtotime($conflict['start_date'])),
-                date('d/m/Y', strtotime($conflict['end_date']))
-            );
-            echo '</p></div>';
+    // Verificar conflictos de fechas solo si tenemos todos los datos
+    if ($restaurant && $start_date && $end_date && function_exists('lamusa_validate_menu_date_overlap')) {
+        try {
+            $conflict = lamusa_validate_menu_date_overlap($restaurant->ID, $start_date, $end_date, $post->ID);
+            if ($conflict) {
+                echo '<div class="notice notice-warning inline">';
+                echo '<p><strong>' . __('¡Atención!', 'lamusa-core') . '</strong><br>';
+                echo sprintf(
+                    __('Este menú se solapa con "%s" (%s - %s)', 'lamusa-core'),
+                    $conflict['menu_title'],
+                    date('d/m/Y', strtotime($conflict['start_date'])),
+                    date('d/m/Y', strtotime($conflict['end_date']))
+                );
+                echo '</p></div>';
+            }
+        } catch (Exception $e) {
+            // Silenciar errores en el metabox para evitar problemas con AJAX
+            error_log('Error en metabox de menú: ' . $e->getMessage());
         }
     }
     
@@ -203,80 +219,92 @@ function lamusa_add_dashboard_widgets() {
  * Callback para el widget del dashboard
  */
 function lamusa_dashboard_menu_overview() {
-    $restaurants = lamusa_get_restaurants();
-    $today = current_time('Y-m-d');
+    // Verificar que las funciones existan antes de usarlas
+    if (!function_exists('lamusa_get_restaurants')) {
+        echo '<p>' . __('Funciones del plugin no disponibles', 'lamusa-core') . '</p>';
+        return;
+    }
     
-    echo '<div class="lamusa-dashboard-overview">';
-    
-    foreach ($restaurants as $restaurant) {
-        $active_menu = lamusa_get_active_weekly_menu($restaurant->ID);
-        $next_menu = lamusa_get_next_weekly_menu($restaurant->ID);
+    try {
+        $restaurants = lamusa_get_restaurants();
+        $today = current_time('Y-m-d');
         
-        echo '<div class="restaurant-overview">';
-        echo '<h4>' . esc_html($restaurant->post_title) . '</h4>';
+        echo '<div class="lamusa-dashboard-overview">';
         
-        if ($active_menu) {
-            $end_date = get_field('end_date', $active_menu->ID);
-            $days_left = max(0, (strtotime($end_date) - strtotime($today)) / (60*60*24));
+        foreach ($restaurants as $restaurant) {
+            $active_menu = function_exists('lamusa_get_active_weekly_menu') ? lamusa_get_active_weekly_menu($restaurant->ID) : null;
+            $next_menu = function_exists('lamusa_get_next_weekly_menu') ? lamusa_get_next_weekly_menu($restaurant->ID) : null;
             
-            echo '<p class="current-menu">';
-            echo '<span class="dashicons dashicons-yes" style="color: green;"></span> ';
-            echo sprintf(__('Menú activo: %s', 'lamusa-core'), $active_menu->post_title);
-            echo '<br><small>' . sprintf(__('Expira en %d días', 'lamusa-core'), $days_left) . '</small>';
-            echo '</p>';
-        } else {
-            echo '<p class="no-menu">';
-            echo '<span class="dashicons dashicons-warning" style="color: orange;"></span> ';
-            echo __('Sin menú activo', 'lamusa-core');
-            echo '</p>';
-        }
-        
-        if ($next_menu) {
-            $start_date = get_field('start_date', $next_menu->ID);
-            $days_until = max(0, (strtotime($start_date) - strtotime($today)) / (60*60*24));
+            echo '<div class="restaurant-overview">';
+            echo '<h4>' . esc_html($restaurant->post_title) . '</h4>';
             
-            echo '<p class="next-menu">';
-            echo '<span class="dashicons dashicons-clock"></span> ';
-            echo sprintf(__('Próximo: %s', 'lamusa-core'), $next_menu->post_title);
-            echo '<br><small>' . sprintf(__('Comienza en %d días', 'lamusa-core'), $days_until) . '</small>';
+            if ($active_menu) {
+                $end_date = get_post_meta($active_menu->ID, 'end_date', true);
+                $days_left = $end_date ? max(0, (strtotime($end_date) - strtotime($today)) / (60*60*24)) : 0;
+                
+                echo '<p class="current-menu">';
+                echo '<span class="dashicons dashicons-yes" style="color: green;"></span> ';
+                echo sprintf(__('Menú activo: %s', 'lamusa-core'), $active_menu->post_title);
+                echo '<br><small>' . sprintf(__('Expira en %d días', 'lamusa-core'), $days_left) . '</small>';
+                echo '</p>';
+            } else {
+                echo '<p class="no-menu">';
+                echo '<span class="dashicons dashicons-warning" style="color: orange;"></span> ';
+                echo __('Sin menú activo', 'lamusa-core');
+                echo '</p>';
+            }
+            
+            if ($next_menu) {
+                $start_date = get_post_meta($next_menu->ID, 'start_date', true);
+                $days_until = $start_date ? max(0, (strtotime($start_date) - strtotime($today)) / (60*60*24)) : 0;
+                
+                echo '<p class="next-menu">';
+                echo '<span class="dashicons dashicons-clock"></span> ';
+                echo sprintf(__('Próximo: %s', 'lamusa-core'), $next_menu->post_title);
+                echo '<br><small>' . sprintf(__('Comienza en %d días', 'lamusa-core'), $days_until) . '</small>';
+                echo '</p>';
+            }
+            
+            echo '<p class="actions">';
+            echo '<a href="' . admin_url('edit.php?post_type=weekly_menu&restaurant=' . $restaurant->ID) . '" class="button button-small">' . __('Ver menús', 'lamusa-core') . '</a> ';
+            echo '<a href="' . admin_url('post-new.php?post_type=weekly_menu&restaurant=' . $restaurant->ID) . '" class="button button-primary button-small">' . __('Nuevo menú', 'lamusa-core') . '</a>';
             echo '</p>';
+            
+            echo '</div>';
+            
+            if ($restaurant !== end($restaurants)) {
+                echo '<hr>';
+            }
         }
-        
-        echo '<p class="actions">';
-        echo '<a href="' . admin_url('edit.php?post_type=weekly_menu&restaurant=' . $restaurant->ID) . '" class="button button-small">' . __('Ver menús', 'lamusa-core') . '</a> ';
-        echo '<a href="' . admin_url('post-new.php?post_type=weekly_menu&restaurant=' . $restaurant->ID) . '" class="button button-primary button-small">' . __('Nuevo menú', 'lamusa-core') . '</a>';
-        echo '</p>';
         
         echo '</div>';
         
-        if ($restaurant !== end($restaurants)) {
-            echo '<hr>';
+        // CSS para el widget
+        ?>
+        <style>
+        .lamusa-dashboard-overview .restaurant-overview {
+            margin-bottom: 15px;
         }
+        .lamusa-dashboard-overview h4 {
+            margin-bottom: 8px;
+            color: #1d2327;
+        }
+        .lamusa-dashboard-overview p {
+            margin: 5px 0;
+        }
+        .lamusa-dashboard-overview .actions {
+            margin-top: 10px;
+        }
+        .lamusa-dashboard-overview .dashicons {
+            vertical-align: middle;
+        }
+        </style>
+        <?php
+        
+    } catch (Exception $e) {
+        echo '<p>' . __('Error al cargar la información del dashboard', 'lamusa-core') . '</p>';
+        error_log('Error en dashboard widget: ' . $e->getMessage());
     }
-    
-    echo '</div>';
-    
-    // CSS para el widget
-    ?>
-    <style>
-    .lamusa-dashboard-overview .restaurant-overview {
-        margin-bottom: 15px;
-    }
-    .lamusa-dashboard-overview h4 {
-        margin-bottom: 8px;
-        color: #1d2327;
-    }
-    .lamusa-dashboard-overview p {
-        margin: 5px 0;
-    }
-    .lamusa-dashboard-overview .actions {
-        margin-top: 10px;
-    }
-    .lamusa-dashboard-overview .dashicons {
-        vertical-align: middle;
-    }
-    </style>
-    <?php
 }
 
 /**
@@ -399,10 +427,10 @@ function lamusa_add_restaurant_quick_actions($actions, $post) {
  */
 add_action('acf/load_value/name=restaurant', 'lamusa_preselect_restaurant_in_menu', 10, 3);
 function lamusa_preselect_restaurant_in_menu($value, $post_id, $field) {
-    // Solo en el admin y para nuevos posts
-    if (is_admin() && empty($value) && !empty($_GET['restaurant'])) {
+    // Solo en el admin y para nuevos posts, evitar en AJAX
+    if (is_admin() && !wp_doing_ajax() && empty($value) && !empty($_GET['restaurant'])) {
         $restaurant_id = intval($_GET['restaurant']);
-        if (get_post_type($restaurant_id) === 'restaurant') {
+        if ($restaurant_id > 0 && get_post_type($restaurant_id) === 'restaurant') {
             return $restaurant_id;
         }
     }
@@ -455,8 +483,9 @@ function lamusa_menu_expiry_notices() {
         echo '<ul>';
         
         foreach ($expiring_menus as $menu) {
-            $restaurant = get_field('restaurant', $menu->ID);
-            $end_date = get_field('end_date', $menu->ID);
+            $restaurant_id = get_post_meta($menu->ID, 'restaurant', true);
+            $restaurant = $restaurant_id ? get_post($restaurant_id) : null;
+            $end_date = get_post_meta($menu->ID, 'end_date', true);
             $days_left = max(0, (strtotime($end_date) - strtotime($today)) / (60*60*24));
             
             echo '<li>';
