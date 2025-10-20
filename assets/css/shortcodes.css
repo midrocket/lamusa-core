@@ -365,8 +365,6 @@
 .lamusa-no-menu {
     text-align: center;
     padding: 40px 20px;
-    background: var(--lamusa-secondary-color);
-    border: 2px solid var(--lamusa-primary-color);
     margin: 20px 0;
     font-family: var(--lamusa-font-family-primary);
     color: #000000;
@@ -590,7 +588,6 @@
 .mobile-day-header:hover {
     background: rgba(255, 226, 208, 0.8);
     text-decoration: none;
-    color: #000000;
 }
 
 .mobile-day-item.active .mobile-day-header {
@@ -792,18 +789,31 @@
 
 .mobile-restaurants-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 5px;
 }
 
 .mobile-restaurant-item {
-    background: var(--lamusa-primary-color);
-    color: var(--lamusa-secondary-color);
-    padding: 15px 20px;
-    text-decoration: none;
-    border-radius: 4px;
-    text-align: center;
-    transition: all 0.2s ease;
+	background: var(--lamusa-primary-color);
+	transition: all 0.2s ease;
+	color: var(--lamusa-secondary-color);
+	font-family: var(--lamusa-font-family-secondary);
+	font-weight: bold;
+	letter-spacing: 1px;
+	white-space: nowrap;
+	border-bottom: 0;
+	border-top: 0;
+	margin: 0 -1px;
+	display: flex;
+	align-items: center;
+	flex: 1 1 auto;
+	text-align: center;
+	border-right: none;
+	border: 0;
+	padding: 12px 15px;
+	font-size: 2.5em;
+	width: 100%;
+	justify-content: center;
 }
 
 .mobile-restaurant-item:hover {
@@ -813,21 +823,18 @@
 }
 
 .mobile-restaurant-item .mobile-restaurant-name {
-    font-family: var(--lamusa-font-family-quaternary);
-    font-size: 1.1em;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: block;
+    font-family: var(--lamusa-font-family-secondary);
+	font-weight: bold;
+	text-transform: uppercase;
+	display: block;
+    margin-bottom: -4px;
 }
 
 .mobile-restaurant-item .mobile-restaurant-secondary {
     font-family: var(--lamusa-font-family-tertiary);
-    font-size: 0.9em;
-    font-weight: 300;
-    font-style: italic;
-    display: block;
-    margin-top: 3px;
+	font-size: 0.9em;
+	font-weight: 300;
+	display: block;
 }
 
 @media (max-width: 1200px) {
@@ -925,11 +932,13 @@
         font-size: 2.5em;
         width: 100%;
         justify-content: center;
+        display: none;
     }
 
     .lamusa-restaurants-bar .restaurant-bar-item.active {
         background: var(--lamusa-primary-color);
         color: var(--lamusa-secondary-color);
+        display: block;
     }
     
     .lamusa-days-submenu {
@@ -1084,7 +1093,7 @@
     margin-bottom: -0.15em;
 }
 
-/* Responsive para botones de acciÃƒÂ³n */
+/* Responsive para botones de acciÃƒÆ’Ã‚Â³n */
 @media (max-width: 768px) {
     .action-buttons-container {
         flex-direction: column;

@@ -948,7 +948,6 @@ function lamusa_render_mobile_restaurants_bottom($current_restaurant_id) {
     }
     
     echo '<div class="lamusa-mobile-restaurants-bottom">';
-    echo '<h3 class="mobile-other-restaurants-title">Otros Restaurantes</h3>';
     echo '<div class="mobile-restaurants-grid">';
     
     foreach ($restaurants as $restaurant) {

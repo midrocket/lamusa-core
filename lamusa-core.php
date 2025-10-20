@@ -3,7 +3,7 @@
  * Plugin Name: La Musa Core
  * Plugin URI: https://lamusa.es
  * Description: Plugin para gestión de restaurantes, menús semanales y alérgenos para el grupo La Musa
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author: Eduardo MC
  * Text Domain: lamusa-core
  * Domain Path: /languages
